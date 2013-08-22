@@ -1,9 +1,5 @@
-TSUIKit
+TSTableView
 =======
-
-Set of extended UI components for iOS.
-
-## TSTableView
 
 `TSTableView` is UI component for displaying multi columns tabular data with support of hierarchical rows and columns structure.
 It provides smooth animations for item selection and dynamic content modification. 
@@ -25,7 +21,7 @@ Build and run the `TSTableView` project in Xcode to see examples.
 
 ## Installation
 
-All you need to do is drop `TSUIKit` source files into your project and add corresponding `#include "*.h"` to the top of classes that will use particular component.
+All you need to do is drop source files from `Classes\TSUIKit` folder into your project and add `#include "TSTableView.h"`.
 
 ## Contact
 
@@ -36,7 +32,7 @@ Viacheslav Radchenko
 
 ## License
 
-TSUKit is available under the MIT license.
+TSTableView is available under the MIT license.
 
 Copyright © 2013 Viacheslav Radchenko.
 

@@ -862,7 +862,8 @@
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
+    return [image stretchableImageWithLeftCapWidth:rect.size.width/2 topCapHeight:rect.size.height/2];
+    //return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
 }
 
 - (UIImage *)lightHeaderSectionBackgroundImageWithTintColor:(UIColor *)color
@@ -912,7 +913,8 @@
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
+    return [image stretchableImageWithLeftCapWidth:rect.size.width/2 topCapHeight:rect.size.height/2];
+    //return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
 }
 
 - (UIImage *)lightExpandSectionBackgroundImage
@@ -962,7 +964,8 @@
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
+    return [image stretchableImageWithLeftCapWidth:rect.size.width/2 topCapHeight:rect.size.height/2];
+    //return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
 }
 
 
@@ -1076,7 +1079,8 @@
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
+    return [image stretchableImageWithLeftCapWidth:rect.size.width/2 topCapHeight:rect.size.height/2];
+    //return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
 }
 
 #pragma mark - Create background images for Dark Style
@@ -1121,7 +1125,8 @@
 
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
+    return [image stretchableImageWithLeftCapWidth:rect.size.width/2 topCapHeight:rect.size.height/2];
+    //return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
 }
 
 - (UIImage *)darkHeaderSectionBackgroundImageWithTintColor:(UIColor *)color
@@ -1171,7 +1176,8 @@
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(2, rect.size.width/2, 2, rect.size.width/2) resizingMode:UIImageResizingModeStretch];
+    return [image stretchableImageWithLeftCapWidth:rect.size.width/2 topCapHeight:rect.size.height/4];
+    //return [image resizableImageWithCapInsets:UIEdgeInsetsMake(2, rect.size.width/2, 2, rect.size.width/2) resizingMode:UIImageResizingModeStretch];
 }
 
 - (UIImage *)darkExpandSectionBackgroundImage
@@ -1222,7 +1228,8 @@
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
+    return [image stretchableImageWithLeftCapWidth:rect.size.width/2 topCapHeight:rect.size.height/2];
+    //return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
 }
 
 
@@ -1371,8 +1378,9 @@
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
-    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
+  
+    return [image stretchableImageWithLeftCapWidth:rect.size.width/2 topCapHeight:rect.size.height/2];
+    //return [image resizableImageWithCapInsets:UIEdgeInsetsMake(rect.size.height/2, rect.size.width/2, rect.size.height/2, rect.size.width/2)];
 }
 
 

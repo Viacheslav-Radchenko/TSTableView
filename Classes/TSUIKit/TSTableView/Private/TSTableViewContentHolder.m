@@ -82,8 +82,10 @@
 - (void)setSelectionColor:(UIColor *)selectionColor
 {
     _selectionColor = selectionColor;
-    UIImage *img = [TSUtils imageWithInnerShadow:_selectionColor.CGColor blurSize:16 andSize:CGSizeMake(32,32)];
-    _imageView.image = [img resizableImageWithCapInsets:UIEdgeInsetsMake(img.size.height/2, img.size.width/2, img.size.height/2, img.size.width/2)];
+    UIImage *image = [TSUtils imageWithInnerShadow:_selectionColor.CGColor blurSize:16 andSize:CGSizeMake(32,32)];
+    
+    _imageView.image = [image stretchableImageWithLeftCapWidth:image.size.width/2 topCapHeight:image.size.height/2];
+//    _imageView.image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(image.size.height/2, image.size.width/2, image.size.height/2, image.size.width/2)];
 }
 
 @end
