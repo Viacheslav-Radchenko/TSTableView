@@ -9,6 +9,7 @@
 #import "TSTableViewController.h"
 #import "TSTableViewModel.h"
 #import "TSDefines.h"
+#import "TSTableViewController+TestDataDefinition.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface TSTableViewController () <TSTableViewDelegate>
@@ -17,10 +18,10 @@
     TSTableView *_tableView2;
     TSTableViewModel *_model1;
     TSTableViewModel *_model2;
+    
     NSArray *_tables;
     NSArray *_dataModels;
     NSArray *_rowExamples;
-    
     
     NSInteger _stepperPreviousValue;
 }
@@ -38,36 +39,48 @@
     self.settingsView.layer.shadowOpacity = 0.5;
     self.settingsView.layer.shadowOffset = CGSizeMake(2, 4);
     
-    // Row examples should correspond to columnsInfo* and rowsInfo* used below
-    _rowExamples = @[
-        [self rowExample1],
-        [self rowExample3],
-    ];
-    
-    NSArray *columns1 = [self columnsInfo1];
-    NSArray *rows1 = [self rowsInfo1];
-
+    // Top table
     _tableView1 = [[TSTableView alloc] initWithFrame:CGRectMake(20, 80, self.view.frame.size.width - 40, self.view.frame.size.height/2 - 70)];
     _tableView1.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _tableView1.delegate = self;
     [self.view addSubview:_tableView1];
     
-    _model1 = [[TSTableViewModel alloc] initWithTableView:_tableView1 andStyle:TSTableViewStyleDark];
-    [_model1 setColumnsInfo:columns1 andRowsInfo:rows1];
+    _model1 = [[TSTableViewModel alloc] initWithTableView:_tableView1 andStyle:kTSTableViewStyleDark];
+//    NSArray *columns1 = [self columnsInfo1];
+//    NSArray *rows1 = [self rowsInfo1];
+//    [_model1 setColumnsInfo:columns1 andRowsInfo:rows1];
     
-    NSArray *columns2 = [self columnsInfo3];
-    NSArray *rows2 = [self rowsInfo3];
+    NSArray *columns1 = [self columnsForFileSystemTree];
+    NSArray *rows1 = [self rowsForAppDirectory];
+    [_model1 setColumns:columns1 andRows:rows1];
+    
+    // Bottom table
+   
     
     _tableView2 = [[TSTableView alloc] initWithFrame:CGRectMake(20, self.view.frame.size.height/2 + 50, self.view.frame.size.width - 40, self.view.frame.size.height/2 - 70)];
     _tableView2.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _tableView2.delegate = self;
+    
     [self.view addSubview:_tableView2];
     
-    _model2 = [[TSTableViewModel alloc] initWithTableView:_tableView2 andStyle:TSTableViewStyleLight];
-    [_model2 setColumnsInfo:columns2 andRowsInfo:rows2];
+    _model2 = [[TSTableViewModel alloc] initWithTableView:_tableView2 andStyle:kTSTableViewStyleLight];
+    
+//    NSArray *columns2 = [self columnsInfo2];
+//    NSArray *rows2 = [self rowsInfo2];
+//    [_model2 setColumnsInfo:columns2 andRowsInfo:rows2];
+    
+    NSArray *columns2 = [self columnsForFileSystemTree];
+    NSArray *rows2 = [self rowsForAppDirectory];
+    [_model2 setColumns:columns2 andRows:rows2];
     
     _dataModels = @[_model1, _model2];
     _tables = @[_tableView1, _tableView2];
+    
+    // Row examples should correspond to columnsInfo* and rowsInfo* used above
+    _rowExamples = @[
+                     [self rowExample1],
+                     [self rowExample2],
+                     ];
 }
 
 - (void)didReceiveMemoryWarning
@@ -167,611 +180,122 @@
     VerboseLog();
 }
 
-#pragma mark - Data set 1
+#pragma mark - FileSystem
 
-- (NSArray *)columnsInfo1
+- (NSArray *)columnsForFileSystemTree
 {
     NSArray *columns = @[
-                         @{ @"title" : @"Column 1", @"subtitle" : @"This is first column"},
-                         @{ @"title" : @"Column 2", @"color" : @"FF1F3F1F"},
-                         @{ @"title" : @"Column", @"subcolumns" : @[
-                                    @{ @"title" : @"Column 3"},
-                                    @{ @"title" : @"Column 4", @"subcolumns" : @[
-                                               @{ @"title" : @"Column 4.1",
-                                                  @"titleFontSize" : @"10",
-                                                  @"headerHeight" : @24,
-                                                  @"defWidth" : @64,
-                                                  @"titleColor" : @"FF9F0000"},
-                                               @{ @"title" : @"Column 4.2",
-                                                  @"titleFontSize" : @"10",
-                                                  @"headerHeight" : @24,
-                                                  @"defWidth" : @64,
-                                                  @"titleColor" : @"FF009F00"},
-                                               @{ @"title" : @"Column 4.3",
-                                                  @"headerHeight" : @24,
-                                                  @"defWidth" : @64,
-                                                  @"titleFontSize" : @"10",
-                                                  @"titleColor" : @"FFCFCF00"}
-                                               ]
-                                       }
-                                    ]
-                            },
-                         @{ @"title" : @"Column 5", @"subtitle" : @"This is last column with icon", @"icon" : @"NavigationStripIcon.png"},
+                         [TSColumn columnWithDictionary:@{ @"title" : @"Filename", @"subtitle" : @"Files in Application directory", @"minWidth" : @128, @"defWidth" : @288 }],
+                         [TSColumn columnWithDictionary:@{ @"title" : @"Attributes", @"subcolumns" : @[
+                          @{ @"title" : @"File size", @"titleFontSize" : @12, @"titleColor" : @"FF006F00", @"headerHeight" : @24, @"defWidth" : @64},
+                                     @{ @"title" : @"Modification date", @"titleFontSize" : @12, @"headerHeight" : @24, @"defWidth" : @200},
+                                     @{ @"title" : @"Creation date", @"titleFontSize" : @12, @"headerHeight" : @24, @"defWidth" : @200}
+                          ]}
+                          ]
                          ];
     return columns;
 }
 
-- (TSRow *)rowExample1
+- (NSArray *)rowsForAppDirectory
 {
-    return [TSRow rowWithDictionary:@{ @"cells" : @[
-                                       @{ @"value" : @"New Row"},
-                                       @{ @"value" : @"Value 100"},
-                                       @{ @"value" : @10},
-                                       @{ @"value" : @10},
-                                       @{ @"value" : @"*"},
-                                       @{ @"value" : @10},
-                                       @{ @"value" : @100}
-                                       ]
-     }];
+    NSArray *dirs = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    if(!dirs || dirs.count ==0)
+        return nil;
+    
+    NSURL *rootUrl = [dirs lastObject];
+    
+    return [self rowsForDirectory:[rootUrl URLByDeletingLastPathComponent]];
 }
 
-
-- (NSArray *)rowsInfo1_
+- (NSArray *)rowsForDirectory:(NSURL *)rootUrl
 {
-    NSArray *rows = @[
-                      @{ @"cells" : @[
-                                 @{ @"value" : @"Category 1"},
-                                 @{ @"value" : @"Value 1"},
-                                 @{ @"value" : @1},
-                                 @{ @"value" : @1},
-                                 @{ @"value" : @"?"},
-                                 @{ @"value" : @1},
-                                 @{ @"value" : @1}
-                                 ]
-                         },
-                      @{ @"cells" : @[
-                                 @{ @"value" :  @"Category 2"},
-                                 @{ @"value" : @"Value 2"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @"?"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2}
-                                 ],
-                         @"subrows" : @[
-                                 @{ @"cells" : @[
-                                            @{ @"value" : [NSNull null]},
-                                            @{ @"value" : @"Value 2"},
-                                            @{ @"value" : @2},
-                                            @{ @"value" : @2},
-                                            @{ @"value" : @12},
-                                            @{ @"value" : @4},
-                                            @{ @"value" : @2}
-                                            ],
-                                    },
-                                 @{ @"cells" : @[
-                                            @{ @"value" : [NSNull null]},
-                                            @{ @"value" : @"Value 2"},
-                                            @{ @"value" : @2},
-                                            @{ @"value" : @5},
-                                            @{ @"value" : @12},
-                                            @{ @"value" : @232},
-                                            @{ @"value" : @2}
-                                            ],
-                                    @"subrows" : @[
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @221},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @122},
-                                                       @{ @"value" : @2}
-                                                       ],
-                                               },
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @123},
-                                                       @{ @"value" : @23},
-                                                       @{ @"value" : @2}
-                                                       ],
-                                               },
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @34},
-                                                       @{ @"value" : @2345},
-                                                       @{ @"value" : @72}
-                                                       ],
-                                               }
-                                            ]
-                                    },
-                                 @{ @"cells" : @[
-                                            @{ @"value" : [NSNull null]},
-                                            @{ @"value" : @"Value 2"},
-                                            @{ @"value" : @2},
-                                            @{ @"value" : @42},
-                                            @{ @"value" : @123},
-                                            @{ @"value" : @2},
-                                            @{ @"value" : @12}
-                                            ],
-                                    @"subrows" : @[
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @1},
-                                                       @{ @"value" : @1},
-                                                       @{ @"value" : @28}
-                                                       ],
-                                               },
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @18},
-                                                       @{ @"value" : @27},
-                                                       @{ @"value" : @999},
-                                                       @{ @"value" : @25}
-                                                       ],
-                                               },
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @1},
-                                                       @{ @"value" : @27},
-                                                       @{ @"value" : @87},
-                                                       @{ @"value" : @5}
-                                                       ],
-                                               }
-                                            ]
-                                    }
-                                 ]
-                         },
-                      @{ @"cells" : @[
-                                 @{ @"value" : @"Category 3"},
-                                 @{ @"value" : @"Value 2"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @62}
-                                 ]
-                         },
-                      @{ @"cells" : @[
-                                 @{ @"value" : @"Category 3"},
-                                 @{ @"value" : @"Value 2"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @62}
-                                 ]
-                         },
-                      @{ @"cells" : @[
-                                 @{ @"value" : @"Category 3"},
-                                 @{ @"value" : @"Value 2"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @62}
-                                 ]
-                         },
-                      @{ @"cells" : @[
-                                 @{ @"value" : @"Category 3"},
-                                 @{ @"value" : @"Value 2"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @62}
-                                 ]
-                         },
-                      @{ @"cells" : @[
-                                 @{ @"value" : @"Category 1"},
-                                 @{ @"value" : @"Value 1"},
-                                 @{ @"value" : @1},
-                                 @{ @"value" : @1},
-                                 @{ @"value" : @"?"},
-                                 @{ @"value" : @1},
-                                 @{ @"value" : @1}
-                                 ]
-                         },
-                      @{ @"cells" : @[
-                                 @{ @"value" :  @"Category 2"},
-                                 @{ @"value" : @"Value 2"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @"?"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2}
-                                 ],
-                         @"subrows" : @[
-                                 @{ @"cells" : @[
-                                            @{ @"value" : [NSNull null]},
-                                            @{ @"value" : @"Value 2"},
-                                            @{ @"value" : @2},
-                                            @{ @"value" : @2},
-                                            @{ @"value" : @12},
-                                            @{ @"value" : @4},
-                                            @{ @"value" : @2}
-                                            ],
-                                    },
-                                 @{ @"cells" : @[
-                                            @{ @"value" : [NSNull null]},
-                                            @{ @"value" : @"Value 2"},
-                                            @{ @"value" : @2},
-                                            @{ @"value" : @5},
-                                            @{ @"value" : @12},
-                                            @{ @"value" : @232},
-                                            @{ @"value" : @2}
-                                            ],
-                                    @"subrows" : @[
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @221},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @122},
-                                                       @{ @"value" : @2}
-                                                       ],
-                                               },
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @123},
-                                                       @{ @"value" : @23},
-                                                       @{ @"value" : @2}
-                                                       ],
-                                               },
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @34},
-                                                       @{ @"value" : @2345},
-                                                       @{ @"value" : @72}
-                                                       ],
-                                               }
-                                            ]
-                                    },
-                                 @{ @"cells" : @[
-                                            @{ @"value" : [NSNull null]},
-                                            @{ @"value" : @"Value 2"},
-                                            @{ @"value" : @2},
-                                            @{ @"value" : @42},
-                                            @{ @"value" : @123},
-                                            @{ @"value" : @2},
-                                            @{ @"value" : @12}
-                                            ],
-                                    @"subrows" : @[
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @1},
-                                                       @{ @"value" : @1},
-                                                       @{ @"value" : @28}
-                                                       ],
-                                               },
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @18},
-                                                       @{ @"value" : @27},
-                                                       @{ @"value" : @999},
-                                                       @{ @"value" : @25}
-                                                       ],
-                                               },
-                                            @{ @"cells" : @[
-                                                       @{ @"value" : @""},
-                                                       @{ @"value" : @"Value 2"},
-                                                       @{ @"value" : @2},
-                                                       @{ @"value" : @1},
-                                                       @{ @"value" : @27},
-                                                       @{ @"value" : @87},
-                                                       @{ @"value" : @5}
-                                                       ],
-                                               }
-                                            ]
-                                    }
-                                 ]
-                         },
-                      @{ @"cells" : @[
-                                 @{ @"value" : @"Category 3"},
-                                 @{ @"value" : @"Value 2"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @62}
-                                 ]
-                         },
-                      @{ @"cells" : @[
-                                 @{ @"value" : @"Category 3"},
-                                 @{ @"value" : @"Value 2"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @62}
-                                 ]
-                         },
-                      @{ @"cells" : @[
-                                 @{ @"value" : @"Category 3"},
-                                 @{ @"value" : @"Value 2"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @62}
-                                 ]
-                         },
-                      @{ @"cells" : @[
-                                 @{ @"value" : @"Category 3"},
-                                 @{ @"value" : @"Value 2"},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @2},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @12},
-                                 @{ @"value" : @62}
-                                 ]
-                         }
-                      ];
-    return rows;
-}
-
-- (NSArray *)rowsInfo1
-{
-    int N = 10;
-    NSMutableArray *mutArray = [[NSMutableArray alloc] init];
-    for(int i = 0; i < N;  ++i)
+    NSError *error = nil;
+    NSArray *properties = @[
+        NSURLLocalizedNameKey,
+        NSURLCreationDateKey,
+        NSURLContentModificationDateKey,
+        NSURLIsSymbolicLinkKey,
+        NSURLIsDirectoryKey,
+        NSURLIsHiddenKey,
+        NSURLFileSizeKey
+    ];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"HH:MM  dd-MMM-YYYY"];
+    
+    NSArray *array = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:rootUrl
+                                                   includingPropertiesForKeys:properties
+                                                                      options:0//(NSDirectoryEnumerationSkipsHiddenFiles)
+                                                                        error:&error];
+    NSMutableArray *rows = [[NSMutableArray alloc] initWithCapacity:array.count];
+    for(NSURL * url in array)
     {
-        [mutArray addObjectsFromArray:[self rowsInfo1_]];
+        NSString *localizedName = nil;
+        [url getResourceValue:&localizedName forKey:NSURLLocalizedNameKey error:NULL];
+        
+        NSNumber *isPackage = nil;
+        [url getResourceValue:&isPackage forKey:NSURLIsPackageKey error:NULL];
+        
+        NSNumber *isDirectory = nil;
+        [url getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
+        
+        NSNumber *isHidden = nil;
+        [url getResourceValue:&isHidden forKey:NSURLIsHiddenKey error:NULL];
+        
+        NSNumber *isSymbolic = nil;
+        [url getResourceValue:&isSymbolic forKey:NSURLIsSymbolicLinkKey error:NULL];
+        
+        TSCell *cellFilename = [TSCell cellWithValue:localizedName];
+        cellFilename.textAlignment = NSTextAlignmentLeft;
+        NSArray *subrows = @[];
+        if([isDirectory boolValue])
+        {
+            subrows = [self rowsForDirectory:url];
+            cellFilename.icon = [UIImage imageNamed:@"TableViewFolderIcon"];
+            
+        }
+        else
+        {
+            cellFilename.icon = [UIImage imageNamed:@"TableViewFileIcon"];
+            cellFilename.textColor = [UIColor colorWithRed:0.5 green:0.4 blue:0 alpha:1];
+        }
+        
+        if([isHidden boolValue])
+        {
+            cellFilename.textColor = [UIColor colorWithRed:0.5 green:0.1 blue:0.1 alpha:1];
+        }
+        
+        if([isPackage boolValue])
+        {
+            cellFilename.icon = [UIImage imageNamed:@"TableViewPackageIcon"];
+        }
+
+        NSNumber *fileSize = nil;
+        [url getResourceValue:&fileSize forKey:NSURLFileSizeKey error:NULL];
+        NSString *fileSizeStr = @"";
+        if(fileSize)
+            fileSizeStr = [NSString stringWithFormat:@"%.2f kb",[fileSize floatValue]/1024];
+        
+        NSDate *creationDate = nil;
+        [url getResourceValue:&creationDate forKey:NSURLCreationDateKey error:NULL];
+        
+        NSDate *modificationDate = nil;
+        [url getResourceValue:&modificationDate forKey:NSURLContentModificationDateKey error:NULL];
+
+        TSRow *row = [TSRow rowWithDictionary:@{
+                      @"cells" : @[
+                              cellFilename,
+                              @{@"value" : fileSizeStr},
+                              @{@"value" : [dateFormatter stringFromDate:modificationDate]},
+                              @{@"value" : [dateFormatter stringFromDate:creationDate]}
+                              
+                      ],
+                      @"subrows" : subrows
+         }];
+        [rows addObject:row];
     }
-    return mutArray;
+    return [NSArray arrayWithArray:rows];
 }
 
-#pragma mark  - Data set 2
-
-- (NSArray *)columnsInfo2
-{
-    NSArray *columns = @[
-                          @{ @"title" : @"Column 1", @"subtitle" : @"This is first column"},
-                          @{ @"title" : @"Column 2", @"color" : @"FFCFFFCF"},
-                          @{ @"title" : @"Column", @"subcolumns" : @[
-                                     @{ @"title" : @"Column 3"},
-                                     @{ @"title" : @"Column 4", @"subcolumns" : @[
-                                                @{ @"title" : @"Column 4.1",
-                                                   @"titleFontSize" : @"10",
-                                                   @"headerHeight" : @24,
-                                                   @"defWidth" : @64,
-                                                   @"titleColor" : @"FFFF0000"},
-                                                @{ @"title" : @"Column 4.2",
-                                                   @"titleFontSize" : @"10",
-                                                   @"headerHeight" : @24,
-                                                   @"defWidth" : @64,
-                                                   @"titleColor" : @"FF00cF00"},
-                                                @{ @"title" : @"Column 4.3",
-                                                   @"headerHeight" : @24,
-                                                   @"defWidth" : @64,
-                                                   @"titleFontSize" : @"10",
-                                                   @"titleColor" : @"FF0000FF"}
-                                                ]
-                                        }
-                                     ]
-                             },
-                          @{ @"title" : @"Column 5", @"subtitle" : @"This is last column with icon", @"icon" : @"NavigationStripIcon.png"},
-                          ];
-    return columns;
-}
-
-- (TSRow *)rowExample2
-{
-    return [self rowExample1];
-}
-
-- (NSArray *)rowsInfo2
-{
-    return [self rowsInfo1];
-}
-
-#pragma mark  - Data set 3
-
-- (NSArray *)columnsInfo3
-{
-    NSArray *columns = @[
-                          @{ @"title" : @"Column 1", @"subtitle" : @"This is first column", @"headerHeight" : @48},
-                          @{ @"title" : @"Column 2", @"subtitle" : @"This is second column"},
-                          @{ @"title" : @"Column 3", @"subtitle" : @"This is third column"}
-                          ];
-    return columns;
-}
-
-- (NSArray *)rowsInfo3_
-{
-    NSArray *rows = @[
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 1"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 2"},
-                                  @{ @"value" : @122},
-                                  @{ @"value" : @2431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 3"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 4"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 5"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 6"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 7"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 8"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 9"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 10"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 11"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 12"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 1"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 2"},
-                                  @{ @"value" : @122},
-                                  @{ @"value" : @2431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 3"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 4"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 5"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 6"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 7"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 8"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 9"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 10"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 11"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       @{ @"cells" : @[
-                                  @{ @"value" : @"Value 12"},
-                                  @{ @"value" : @123},
-                                  @{ @"value" : @4431}
-                                  ]
-                          },
-                       ];
-    return rows;
-}
-
-- (TSRow *)rowExample3
-{
-    return [TSRow rowWithDictionary:@{ @"cells" : @[
-                @{ @"value" : @"Value 4"},
-                @{ @"value" : @123},
-                @{ @"value" : @4431}
-                ]
-            }];
-}
-
-- (NSArray *)rowsInfo3
-{
-    int N = 10;
-    NSMutableArray *mutArray = [[NSMutableArray alloc] init];
-    for(int i = 0; i < N;  ++i)
-    {
-        [mutArray addObjectsFromArray:[self rowsInfo3_]];
-    }
-    return mutArray;
-}
 
 @end
