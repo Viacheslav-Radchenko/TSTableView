@@ -77,10 +77,10 @@
     _tables = @[_tableView1, _tableView2];
     
     // Row examples should correspond to columnsInfo* and rowsInfo* used above
-    _rowExamples = @[
-                     [self rowExample1],
-                     [self rowExample2],
-                     ];
+//    _rowExamples = @[
+//                     [self rowExample1],
+//                     [self rowExample2],
+//                     ];
 }
 
 - (void)didReceiveMemoryWarning
@@ -104,8 +104,11 @@
             if(!rowPath)
                 rowPath = [NSIndexPath indexPathWithIndex:0];
             
-            TSRow *row = _rowExamples[i];
-            [model insertRow:row atPath:rowPath];
+            if(_rowExamples)
+            {
+                TSRow *row = _rowExamples[i];
+                [model insertRow:row atPath:rowPath];
+            }
         }
     }
     else

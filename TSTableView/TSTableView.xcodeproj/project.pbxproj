@@ -31,6 +31,13 @@
 		F6141FD317C6A80F003455EB /* TSTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6141FCC17C6A80E003455EB /* TSTableViewController.xib */; };
 		F6141FD417C6A80F003455EB /* TSTableViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6141FCE17C6A80E003455EB /* TSTableViewController~ipad.xib */; };
 		F6141FD517C6A80F003455EB /* TSTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6141FD117C6A80E003455EB /* TSTableViewController.m */; };
+		F657419117CD891400826563 /* TSTableViewController+TestDataDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = F657419017CD891400826563 /* TSTableViewController+TestDataDefinition.m */; };
+		F657420717CD893B00826563 /* TableViewFileIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F65741CC17CD893B00826563 /* TableViewFileIcon.png */; };
+		F657420817CD893B00826563 /* TableViewFolderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F65741CD17CD893B00826563 /* TableViewFolderIcon.png */; };
+		F657420917CD893B00826563 /* TableViewPackageIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F65741CE17CD893B00826563 /* TableViewPackageIcon.png */; };
+		F657420A17CD893B00826563 /* TableViewFileIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F65741D017CD893B00826563 /* TableViewFileIcon@2x.png */; };
+		F657420B17CD893B00826563 /* TableViewFolderIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F65741D117CD893B00826563 /* TableViewFolderIcon@2x.png */; };
+		F657420C17CD893B00826563 /* TableViewPackageIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F65741D217CD893B00826563 /* TableViewPackageIcon@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +85,14 @@
 		F6141FCF17C6A80E003455EB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "TSTableViewController~ipad.xib"; sourceTree = "<group>"; };
 		F6141FD017C6A80E003455EB /* TSTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSTableViewController.h; sourceTree = "<group>"; };
 		F6141FD117C6A80E003455EB /* TSTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSTableViewController.m; sourceTree = "<group>"; };
+		F657418F17CD891400826563 /* TSTableViewController+TestDataDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TSTableViewController+TestDataDefinition.h"; sourceTree = "<group>"; };
+		F657419017CD891400826563 /* TSTableViewController+TestDataDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TSTableViewController+TestDataDefinition.m"; sourceTree = "<group>"; };
+		F65741CC17CD893B00826563 /* TableViewFileIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TableViewFileIcon.png; sourceTree = "<group>"; };
+		F65741CD17CD893B00826563 /* TableViewFolderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TableViewFolderIcon.png; sourceTree = "<group>"; };
+		F65741CE17CD893B00826563 /* TableViewPackageIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TableViewPackageIcon.png; sourceTree = "<group>"; };
+		F65741D017CD893B00826563 /* TableViewFileIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableViewFileIcon@2x.png"; sourceTree = "<group>"; };
+		F65741D117CD893B00826563 /* TableViewFolderIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableViewFolderIcon@2x.png"; sourceTree = "<group>"; };
+		F65741D217CD893B00826563 /* TableViewPackageIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableViewPackageIcon@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +112,7 @@
 		F6141F5917C6A725003455EB = {
 			isa = PBXGroup;
 			children = (
+				F657419217CD893B00826563 /* SharedResources */,
 				F6141F8217C6A76F003455EB /* TSUIKit */,
 				F6141F6B17C6A725003455EB /* TSTableView */,
 				F6141F6417C6A725003455EB /* Frameworks */,
@@ -125,6 +141,8 @@
 		F6141F6B17C6A725003455EB /* TSTableView */ = {
 			isa = PBXGroup;
 			children = (
+				F657418F17CD891400826563 /* TSTableViewController+TestDataDefinition.h */,
+				F657419017CD891400826563 /* TSTableViewController+TestDataDefinition.m */,
 				F6141FC917C6A80E003455EB /* en.lproj */,
 				F6141FD017C6A80E003455EB /* TSTableViewController.h */,
 				F6141FD117C6A80E003455EB /* TSTableViewController.m */,
@@ -217,6 +235,52 @@
 			path = en.lproj;
 			sourceTree = "<group>";
 		};
+		F657419217CD893B00826563 /* SharedResources */ = {
+			isa = PBXGroup;
+			children = (
+				F657419317CD893B00826563 /* Textures */,
+			);
+			name = SharedResources;
+			path = ../SharedResources;
+			sourceTree = "<group>";
+		};
+		F657419317CD893B00826563 /* Textures */ = {
+			isa = PBXGroup;
+			children = (
+				F65741CA17CD893B00826563 /* TableView */,
+			);
+			path = Textures;
+			sourceTree = "<group>";
+		};
+		F65741CA17CD893B00826563 /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				F65741CB17CD893B00826563 /* 1x */,
+				F65741CF17CD893B00826563 /* 2x */,
+			);
+			path = TableView;
+			sourceTree = "<group>";
+		};
+		F65741CB17CD893B00826563 /* 1x */ = {
+			isa = PBXGroup;
+			children = (
+				F65741CC17CD893B00826563 /* TableViewFileIcon.png */,
+				F65741CD17CD893B00826563 /* TableViewFolderIcon.png */,
+				F65741CE17CD893B00826563 /* TableViewPackageIcon.png */,
+			);
+			path = 1x;
+			sourceTree = "<group>";
+		};
+		F65741CF17CD893B00826563 /* 2x */ = {
+			isa = PBXGroup;
+			children = (
+				F65741D017CD893B00826563 /* TableViewFileIcon@2x.png */,
+				F65741D117CD893B00826563 /* TableViewFolderIcon@2x.png */,
+				F65741D217CD893B00826563 /* TableViewPackageIcon@2x.png */,
+			);
+			path = 2x;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -276,6 +340,12 @@
 				F6141FD217C6A80F003455EB /* InfoPlist.strings in Resources */,
 				F6141FD317C6A80F003455EB /* TSTableViewController.xib in Resources */,
 				F6141FD417C6A80F003455EB /* TSTableViewController~ipad.xib in Resources */,
+				F657420717CD893B00826563 /* TableViewFileIcon.png in Resources */,
+				F657420817CD893B00826563 /* TableViewFolderIcon.png in Resources */,
+				F657420917CD893B00826563 /* TableViewPackageIcon.png in Resources */,
+				F657420A17CD893B00826563 /* TableViewFileIcon@2x.png in Resources */,
+				F657420B17CD893B00826563 /* TableViewFolderIcon@2x.png in Resources */,
+				F657420C17CD893B00826563 /* TableViewPackageIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +370,7 @@
 				F6141FC317C6A76F003455EB /* TSTableViewHeaderSectionView.m in Sources */,
 				F6141FC417C6A76F003455EB /* TSTableViewModel.m in Sources */,
 				F6141FD517C6A80F003455EB /* TSTableViewController.m in Sources */,
+				F657419117CD891400826563 /* TSTableViewController+TestDataDefinition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +511,7 @@
 				F6141F8117C6A725003455EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
