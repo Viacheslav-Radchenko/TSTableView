@@ -16,7 +16,7 @@ It provides smooth animations for item selection and dynamic content modificatio
 * Default TSTableViewModel implements TSTableViewDataSource protocol and includes two built in styles (see screenshots).
             
 <img src="https://raw.github.com/Viacheslav-Radchenko/TSUIKit/master/Screenshots/TSTableView_SCreenshot1.png" alt="TSTableView examples" width="360" height="480" />
-<img src="https://raw.github.com/Viacheslav-Radchenko/TSUIKit/master/Screenshots/TSTableView_Screenshot2.png" alt="TSTableView examples" width="360" height="480" />
+<img src="https://raw.github.com/Viacheslav-Radchenko/TSUIKit/master/Screenshots/TSTableView_SCreenshot2.png" alt="TSTableView examples" width="360" height="480" />
 
 Example of TSTableView object instantiation provided below. 
 ```
