@@ -45,4 +45,10 @@
 
 - (id)initWithReuseIdentifier:(NSString *)reuseId;
 
+/**
+ *  @abstract   Override to reset cell settings before it would be reused.
+ *              Method would be called by owner object before return cell from reuse queue.
+ */
+- (void)prepareForReuse;
+
 @end

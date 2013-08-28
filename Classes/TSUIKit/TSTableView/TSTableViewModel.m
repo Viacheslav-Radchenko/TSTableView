@@ -73,6 +73,7 @@
         _maxWidth = MAX_COLUMN_WIDTH;
         _defWidth = DEF_COLUMN_WIDTH;
         _headerHeight = DEF_COLUMN_HEADER_HEIGHT;
+        _textAlignment = NSTextAlignmentCenter;
     }
     return self;
 }
@@ -86,6 +87,7 @@
         _maxWidth = MAX_COLUMN_WIDTH;
         _defWidth = DEF_COLUMN_WIDTH;
         _headerHeight = DEF_COLUMN_HEADER_HEIGHT;
+        _textAlignment = NSTextAlignmentCenter;
         
         NSMutableArray *columns = [[NSMutableArray alloc] initWithCapacity:subcolumns.count];
         for(id subcolumn in subcolumns)
@@ -136,6 +138,11 @@
         _maxWidth = MAX_COLUMN_WIDTH;
         _defWidth = DEF_COLUMN_WIDTH;
         _headerHeight = DEF_COLUMN_HEADER_HEIGHT;
+        _textAlignment = NSTextAlignmentCenter;
+        
+        NSString *textAligmentStr = info[@"textAlignment"];
+        if(textAligmentStr)
+            _textAlignment = [textAligmentStr integerValue];
         
         NSString *widthStr = info[@"minWidth"];
         if(widthStr)
@@ -157,11 +164,15 @@
         if(subcolumns.count)
         {
             NSMutableArray *tmpColumns = [[NSMutableArray alloc] initWithCapacity:subcolumns.count];
-            for(NSDictionary *subcolumnInfo in subcolumns)
+            for(id subcolumnInfo in subcolumns)
             {
                 if([subcolumnInfo isKindOfClass:[NSDictionary class]])
                 {
                     [tmpColumns addObject:[[TSColumn alloc] initWithDictionary:subcolumnInfo]];
+                }
+                else if([subcolumnInfo isKindOfClass:[TSColumn class]])
+                {
+                    [tmpColumns addObject:subcolumnInfo];
                 }
                 else
                 {
@@ -253,11 +264,15 @@
         if(cells)
         {
             NSMutableArray *tmpCells = [[NSMutableArray alloc] initWithCapacity:cells.count];
-            for(NSDictionary *cellInfo in cells)
+            for(id cellInfo in cells)
             {
                 if([cellInfo isKindOfClass:[NSDictionary class]])
                 {
                     [tmpCells addObject:[[TSCell alloc] initWithDictionary:cellInfo]];
+                }
+                else if([cellInfo isKindOfClass:[TSCell class]])
+                {
+                    [tmpCells addObject:cellInfo];
                 }
                 else
                 {
@@ -271,11 +286,15 @@
         if(subrows)
         {
             NSMutableArray *tmpRows = [[NSMutableArray alloc] initWithCapacity:subrows.count];
-            for(NSDictionary *rowInfo in subrows)
+            for(id rowInfo in subrows)
             {
                 if([rowInfo isKindOfClass:[NSDictionary class]])
                 {
                     [tmpRows addObject:[[TSRow alloc] initWithDictionary:rowInfo]];
+                }
+                else if([rowInfo isKindOfClass:[TSRow class]])
+                {
+                    [tmpRows addObject:rowInfo];
                 }
                 else
                 {
@@ -308,6 +327,7 @@
 {
     if(self = [super init])
     {
+        _textAlignment = NSTextAlignmentCenter;
         _value = value;
     }
     return self;
@@ -318,6 +338,24 @@
     if(self = [super init])
     {
         _value = info[@"value"];
+        _details = info[@"details"];
+        
+        NSString *colorStr = info[@"textColor"];
+        if(colorStr)
+            _textColor = [TSUtils colorWithHexString:colorStr];
+        
+        colorStr = info[@"detailsColor"];
+        if(colorStr)
+            _detailsColor = [TSUtils colorWithHexString:colorStr];
+        
+        NSString *iconName = info[@"icon"];
+        if(iconName)
+            _icon = [UIImage imageNamed:iconName];
+        
+        _textAlignment = NSTextAlignmentCenter;
+        NSString *textAligmentStr = info[@"textAlignment"];
+        if(textAligmentStr)
+            _textAlignment = [textAligmentStr integerValue];
     }
     return self;
 }
@@ -350,7 +388,7 @@
         _heightForRow = DEF_ROW_HEIGHT;
         _widthForExpandItem = DEF_EXPAND_ITEM_WIDTH;
         
-        if(_tableStyle == TSTableViewStyleLight)
+        if(_tableStyle == kTSTableViewStyleLight)
         {
             _tableView.lineNumbersColor = [UIColor blackColor];
             _tableView.backgroundColor = [UIColor grayColor];
@@ -440,6 +478,7 @@
 {
     VerboseLog();
     [_columns removeAllObjects];
+    [_bottomEndColumns removeAllObjects];
     [_rows removeAllObjects];
     
     for(NSDictionary *columnInfo in columns)
@@ -469,6 +508,51 @@
     [_tableView reloadData];
 }
 
+
+- (void)setRows:(NSArray *)rows
+{
+    VerboseLog();
+    [_rows removeAllObjects];
+    
+    for(id row in rows)
+    {
+        if([row isKindOfClass:[TSRow class]])
+        {
+            [_rows addObject:row];
+        }
+        else if([row isKindOfClass:[NSArray class]])
+        {
+            [_rows addObject:[[TSRow alloc] initWithCells:row]];
+        }
+        else
+        {
+            NSAssert(FALSE, @"Type is not supported");
+        }
+    }
+    
+    [_tableView reloadData];
+}
+
+
+- (void)setRowsInfo:(NSArray *)rows
+{
+    VerboseLog();
+    [_rows removeAllObjects];
+
+    for(NSDictionary *rowInfo in rows)
+    {
+        if([rowInfo isKindOfClass:[NSDictionary class]])
+        {
+            [_rows addObject:[TSRow rowWithDictionary:rowInfo]];
+        }
+        else
+        {
+            NSAssert(FALSE, @"Type is not supported");
+        }
+    }
+    [_tableView reloadRowsData];
+    
+}
 
 - (TSRow *)rowAtPath:(NSIndexPath *)indexPath
 {
@@ -638,8 +722,6 @@
     if(!cell)
         cell = [[TSTableViewCell alloc] initWithReuseIdentifier:kReuseCellId];
 
-    cell.textLabel.text = (cellInfo.value == [NSNull null] ? @"" : [cellInfo.value description]);
-    
     TSColumn *columnInfo = [self columnAtIndex:index];
     if(columnInfo.titleColor)
     {
@@ -647,13 +729,30 @@
     }
     else
     {
-        if(_tableStyle == TSTableViewStyleDark)
+        if(_tableStyle == kTSTableViewStyleDark)
             cell.textLabel.textColor = [UIColor grayColor];
         else
             cell.textLabel.textColor = [UIColor darkGrayColor];
     }
     
-    // Values and proportions below just came up from my head, there is no special logic for this... it just looks fine, that's all
+    if(cellInfo.value)
+    {
+        cell.textLabel.text = [cellInfo.value description];
+        cell.textLabel.textAlignment = cellInfo.textAlignment;
+        if(cellInfo.textColor)
+            cell.textLabel.textColor = cellInfo.textColor;
+    }
+    if(cellInfo.details)
+    {
+        cell.detailsLabel.text = cellInfo.details;
+        cell.detailsLabel.textAlignment = cellInfo.textAlignment;
+        if(cellInfo.detailsColor)
+            cell.detailsLabel.textColor = cellInfo.detailsColor;
+    }
+    if(cellInfo.icon)
+        cell.iconView.image = cellInfo.icon;
+    
+    // Color values and proportions below just came up from my head, there is no special logic for this... it just looks fine, that's all
     if(columnInfo.color)
     {
         CGFloat color = 0.9f + 0.1f * (1 - (indexPath.length - 1)/(float)tableView.maxNestingLevel);
@@ -664,7 +763,7 @@
     else
     {
         CGFloat color;
-        if(_tableStyle == TSTableViewStyleDark)
+        if(_tableStyle == kTSTableViewStyleDark)
             color = 0.16f + 0.04f * (1 - (indexPath.length - 1)/(float)tableView.maxNestingLevel);
         else
             color = 0.9f + 0.1f * (1 - (indexPath.length - 1)/(float)tableView.maxNestingLevel);
@@ -679,7 +778,7 @@
     TSColumn *column = [self columnAtPath:indexPath];
     TSTableViewHeaderSectionView *section = [[TSTableViewHeaderSectionView alloc] init];
     
-    if(_tableStyle == TSTableViewStyleDark)
+    if(_tableStyle == kTSTableViewStyleDark)
     {
         section.textLabel.layer.shadowColor = [UIColor blackColor].CGColor;
         section.textLabel.textColor = [UIColor grayColor];
@@ -691,9 +790,15 @@
     section.backgroundImageView.image = [self headerSectionBackgroundImageWithTintColor:column.color];
     
     if(column.title)
+    {
         section.textLabel.text = column.title;
+        section.textLabel.textAlignment = column.textAlignment;
+    }
     if(column.subtitle)
+    {
         section.detailsLabel.text = column.subtitle;
+        section.detailsLabel.textAlignment = column.textAlignment;
+    }
     if(column.icon)
         section.iconView.image = column.icon;
     if(column.titleColor)
@@ -712,6 +817,7 @@
 
 - (void)insertRow:(TSRow *)rowInfo atPath:(NSIndexPath *)indexPath
 {
+    VerboseLog();
     TSRow *row;
     NSMutableArray *rows = _rows;
     for(int i = 0; i < indexPath.length - 1;  ++i)
@@ -727,6 +833,7 @@
 
 - (void)removeRowAtPath:(NSIndexPath *)indexPath
 {
+    VerboseLog();
     TSRow *row;
     NSMutableArray *rows = _rows;
     for(int i = 0; i < indexPath.length - 1;  ++i)
@@ -740,6 +847,22 @@
     [_tableView removeRowAtPath:indexPath animated:YES];
 }
 
+- (void)replcaceRowAtPath:(NSIndexPath *)indexPath withRow:(TSRow *)rowInfo
+{
+    VerboseLog();
+    TSRow *row;
+    NSMutableArray *rows = _rows;
+    for(int i = 0; i < indexPath.length - 1;  ++i)
+    {
+        NSInteger index = [indexPath indexAtPosition:i];
+        row = rows[index];
+        rows = row.subrows;
+    }
+    NSInteger lastIndex = [indexPath indexAtPosition:indexPath.length - 1];
+    [rows replaceObjectAtIndex:lastIndex withObject:rowInfo];
+    [_tableView updateRowAtPath:indexPath];
+}
+
 #pragma mark - Create background images
 
 - (UIImage *)cellBackgroundImageWithTintColor:(UIColor *)color
@@ -748,7 +871,7 @@
     UIImage *image = _cachedCellBackgroundImages[key];
     if(!image)
     {
-        if(_tableStyle == TSTableViewStyleDark)
+        if(_tableStyle == kTSTableViewStyleDark)
             image = [self darkCellBackgroundImageWithTintColor:color];
         else
             image = [self lightCellBackgroundImageWithTintColor:color];
@@ -763,7 +886,7 @@
     UIImage *image = _cachedHeaderSectionBackgroundImages[key];
     if(!image)
     {
-        if(_tableStyle == TSTableViewStyleDark)
+        if(_tableStyle == kTSTableViewStyleDark)
             image = [self darkHeaderSectionBackgroundImageWithTintColor:color];
         else
             image = [self lightHeaderSectionBackgroundImageWithTintColor:color];
@@ -776,7 +899,7 @@
 {
     if(!_cachedExpandSectionBackgroundImage)
     {
-        if(_tableStyle == TSTableViewStyleDark)
+        if(_tableStyle == kTSTableViewStyleDark)
             _cachedExpandSectionBackgroundImage = [self darkExpandSectionBackgroundImage];
         else
             _cachedExpandSectionBackgroundImage = [self lightExpandSectionBackgroundImage];
@@ -788,7 +911,7 @@
 {
     if(!_cachedExpandItemNormalBackgroundImage)
     {
-        if(_tableStyle == TSTableViewStyleDark)
+        if(_tableStyle == kTSTableViewStyleDark)
             _cachedExpandItemNormalBackgroundImage = [self darkExpandItemNormalBackgroundImage];
         else
             _cachedExpandItemNormalBackgroundImage = [self lightExpandItemNormalBackgroundImage];
@@ -800,7 +923,7 @@
 {
     if(!_cachedExpandItemSelectedBackgroundImage)
     {
-        if(_tableStyle == TSTableViewStyleDark)
+        if(_tableStyle == kTSTableViewStyleDark)
             _cachedExpandItemSelectedBackgroundImage = [self darkExpandItemSelectedBackgroundImage];
         else
             _cachedExpandItemSelectedBackgroundImage = [self lightExpandItemSelectedBackgroundImage];
@@ -812,7 +935,7 @@
 {
     if(!_cachedGeneralBackgroundImage)
     {
-        if(_tableStyle == TSTableViewStyleDark)
+        if(_tableStyle == kTSTableViewStyleDark)
             _cachedGeneralBackgroundImage = [self darkGeneralBackgroundImage];
         else
             _cachedGeneralBackgroundImage = [self lightGeneralBackgroundImage];

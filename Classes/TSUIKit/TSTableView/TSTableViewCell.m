@@ -155,4 +155,29 @@
     }
 }
 
+- (void)prepareForReuse
+{
+    if(_detailsLabel)
+    {
+        _textLabel.textAlignment = NSTextAlignmentCenter;
+        _textLabel.font = [UIFont systemFontOfSize:14.0f];
+        _textLabel.textColor = [UIColor darkGrayColor];
+    }
+    if(_textLabel)
+    {
+        _detailsLabel.textAlignment = NSTextAlignmentCenter;
+        _detailsLabel.font = [UIFont systemFontOfSize:10.0f];
+        _detailsLabel.textColor = [UIColor grayColor];
+    }
+    if(_iconView)
+    {
+        _iconView.image = nil;
+    }
+    
+    if(_backgroundImageView)
+    {
+        _backgroundImageView.image = nil;
+    }
+}
+
 @end

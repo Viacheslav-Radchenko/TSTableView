@@ -264,6 +264,8 @@
         TSTableViewCell *cellView = [cells lastObject];
         if(cellView)
             [cells removeObject:cellView];
+        
+        [cellView prepareForReuse];
         return cellView;
     }
     return nil;

@@ -99,7 +99,7 @@
 - (void)initialize
 {
     VerboseLog();
-    self.backgroundColor = [UIColor redColor];
+    self.backgroundColor = [UIColor blackColor];
     
     _lineNumbersColor = [UIColor blackColor];
     _contentAdditionalSize = DEF_TABLE_CONTENT_ADDITIONAL_SIZE;
@@ -159,6 +159,28 @@
 - (void)setAllowColumnRowSelection:(BOOL)val
 {
     _tableHeader.allowColumnSelection = val;
+}
+
+- (BOOL)headerPanelHidden
+{
+    return _tableHeader.hidden;
+}
+
+- (void)setHeaderPanelHidden:(BOOL)hidden
+{
+    _tableHeader.hidden = hidden;
+    [self updateLayout];
+}
+
+- (BOOL)expandPanelHidden
+{
+    return _tableControlPanel.hidden;
+}
+
+- (void)setExpandPanelHidden:(BOOL)hidden
+{
+    _tableControlPanel.hidden = hidden;
+    [self updateLayout];
 }
 
 - (UIImage *)headerBackgroundImage
@@ -255,8 +277,8 @@
 - (void)updateLayout
 {
     VerboseLog();
-    CGFloat headerHeight = [_tableHeader headerHeight];
-    CGFloat controlPanleWidth = [_tableControlPanel panelWidth];
+    CGFloat headerHeight = (_tableHeader.hidden ? 0 : [_tableHeader headerHeight]);
+    CGFloat controlPanleWidth = (_tableControlPanel.hidden ? 0 : [_tableControlPanel panelWidth]);
     CGFloat tableWidth = [_tableHeader tableTotalWidth];
     CGFloat tableHeight = [_tableControlPanel tableHeight];
     
@@ -273,13 +295,22 @@
     _tableContentHolder.contentSize = CGSizeMake(tableWidth + _contentAdditionalSize, tableHeight + _contentAdditionalSize);
     
     if(_headerBackgroundImageView)
+    {
+        _headerBackgroundImageView.hidden = _tableHeader.hidden;
         _headerBackgroundImageView.frame = _tableHeader.frame;
+    }
     
     if(_expandPanelBackgroundImageView)
+    {
+        _expandPanelBackgroundImageView.hidden = _tableControlPanel.hidden;
         _expandPanelBackgroundImageView.frame = _tableControlPanel.frame;
+    }
 
     if(_topLeftCornerBackgroundImageView)
+    {
+        _topLeftCornerBackgroundImageView.hidden = _tableControlPanel.hidden || _tableHeader.hidden;
         _topLeftCornerBackgroundImageView.frame = CGRectMake(0, 0, _tableControlPanel.frame.size.width, _tableHeader.frame.size.height);
+    }
 }
 
 - (void)reloadData
@@ -287,6 +318,14 @@
     VerboseLog();
     [self clearCachedData];
     [self.tableHeader reloadData];
+    [self.tableControlPanel reloadData];
+    [self.tableContentHolder reloadData];
+    [self updateLayout];
+}
+
+- (void)reloadRowsData
+{
+    VerboseLog();
     [self.tableControlPanel reloadData];
     [self.tableContentHolder reloadData];
     [self updateLayout];

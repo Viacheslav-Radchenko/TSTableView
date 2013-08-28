@@ -91,6 +91,18 @@
 @property (nonatomic, assign) BOOL lineNumbersHidden;
 
 /**
+ *  @abstract If YES then header niew isn't shown
+ *  @def NO
+ */
+@property (nonatomic, assign) BOOL headerPanelHidden;
+
+/**
+ *  @abstract If YES then expand niew isn't shown
+ *  @def NO
+ */
+@property (nonatomic, assign) BOOL expandPanelHidden;
+
+/**
  *  @abstract Color for row line numbers in side panel
  */
 @property (nonatomic, strong) UIColor *lineNumbersColor;
@@ -139,9 +151,14 @@
 @property (nonatomic, strong) UIColor *expandPanelBackgroundColor;
 
 /**
- *  @abstract Reload content
+ *  @abstract Reload content. Both columns and rows are updated
  */
 - (void)reloadData;
+
+/**
+ *  @abstract Reload rows data
+ */
+- (void)reloadRowsData;
 
 /**
  *  @abstract Reuse cached instance of cell view with specified Id.
@@ -198,6 +215,9 @@
  */
 - (NSIndexPath *)pathToSelectedColumn;
 
+/**
+ *  @abstract Modify content
+ */
 - (void)insertRowAtPath:(NSIndexPath *)path animated:(BOOL)animated;
 - (void)removeRowAtPath:(NSIndexPath *)path animated:(BOOL)animated;
 - (void)updateRowAtPath:(NSIndexPath *)path;
