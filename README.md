@@ -59,6 +59,9 @@ Result of code snippet is shown below, as well as more complex example displayin
 <img src="https://raw.github.com/Viacheslav-Radchenko/TSUIKit/master/Screenshots/TSTableView_Screenshot3.png" alt="TSTableView examples" width="360" height="480" />
 <img src="https://raw.github.com/Viacheslav-Radchenko/TSUIKit/master/Screenshots/TSTableView_Screenshot4.png" alt="TSTableView examples" width="360" height="480" />
 
+## Links
+
+Parent repository [TSUIKit](https://github.com/Viacheslav-Radchenko/TSUIKit).
 
 ## Requirements
 
