@@ -32,25 +32,25 @@
 @protocol TSTableViewHeaderPanelDelegate <NSObject>
 
 /**
- *  @abstract Invoked when user manually changing column width
+    @abstract Invoked when user manually changing column width
  */
 - (void)tableViewHeader:(TSTableViewHeaderPanel *)header columnWidthDidChange:(NSInteger)columnIndex oldWidth:(CGFloat)oldWidth newWidth:(CGFloat)newWidth;
 
 /**
- *  @abstract Invoked when user tap on section header
+    @abstract Invoked when user tap on section header
  */
 - (void)tableViewHeader:(TSTableViewHeaderPanel *)header didSelectColumnAtPath:(NSIndexPath *)columnPath;
 
 @end
 
 /**
- *  @abstract TSTableViewHeaderPanel is subcomponent of TSTableView. It represents columns structure of the table. 
- *            Base layout is shown below:
- *  +--------------------------+------------------------------------------------------------+----------------------------------+
- *  |                          |                TSTableViewHeaderSection                    |                                  |
- *  | TSTableViewHeaderSection +----------------------------+-------------------------------+  ...TSTableViewHeaderSection...  |
- *  |                          |  TSTableViewHeaderSection  | ...TSTableViewHeaderSection   |                                  |
- *  +--------------------------+----------------------------+-------------------------------+----------------------------------+
+    @abstract TSTableViewHeaderPanel is subcomponent of TSTableView. It represents columns structure of the table. 
+              Base layout is shown below:
+    +--------------------------+------------------------------------------------------------+----------------------------------+
+    |                          |                TSTableViewHeaderSection                    |                                  |
+    | TSTableViewHeaderSection +----------------------------+-------------------------------+  ...TSTableViewHeaderSection...  |
+    |                          |  TSTableViewHeaderSection  | ...TSTableViewHeaderSection   |                                  |
+    +--------------------------+----------------------------+-------------------------------+----------------------------------+
  */
 
 @protocol TSTableViewDataSource;
@@ -62,42 +62,42 @@
 @property (nonatomic, weak) id<TSTableViewDataSource, TSTableViewAppearanceCoordinator> dataSource;
 
 /**
- *  @abstract Allow column selection
+    @abstract Allow column selection
  */
 @property (nonatomic, assign) BOOL allowColumnSelection;
 
 /**
- *  @abstract Reload column data
+    @abstract Reload column data
  */
 - (void)reloadData;
 
 /**
- *  @abstract Change width of specified column
+    @abstract Change width of specified column
  */
 - (void)changeColumnWidthOnAmount:(CGFloat)delta forColumn:(NSInteger)columnIndex animated:(BOOL)animated;
 
 /**
- *  @abstract Width of the table including all columns
+    @abstract Width of the table including all columns
  */
 - (CGFloat)tableTotalWidth;
 
 /**
- *  @abstract Width of the specified column
+    @abstract Width of the specified column
  */
 - (CGFloat)widthForColumnAtIndex:(NSInteger)index;
 
 /**
- *  @abstract Width of the specified column
+    @abstract Width of the specified column
  */
 - (CGFloat)widthForColumnAtPath:(NSIndexPath *)indexPath;
 
 /**
- *  @abstract X offset of the specified column
+    @abstract X offset of the specified column
  */
 - (CGFloat)offsetForColumnAtPath:(NSIndexPath *)indexPath;
 
 /**
- *  @abstract Height of the table's header. Value updated in reloadData.
+    @abstract Height of the table's header. Value updated in reloadData.
  */
 - (CGFloat)headerHeight;
 

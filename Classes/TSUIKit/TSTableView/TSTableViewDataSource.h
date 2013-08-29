@@ -34,68 +34,68 @@
 @protocol TSTableViewDataSource <NSObject>
 
 /**
- *  @abstract Total number of columns (including subcolumns) in table
+    @abstract Total number of columns (including subcolumns) in table
  */
 - (NSInteger)numberOfColumns;
 
 /**
- *  @abstract Total number of rows (including subrows) in table
+    @abstract Total number of rows (including subrows) in table
  */
 - (NSInteger)numberOfRows;
 
 /**
- *  @abstract Number of subcolumns at specified path
- *  @param indexPath - if nil, return number top level columns
+    @abstract Number of subcolumns at specified path
+    @param indexPath - if nil, return number top level columns
  */
 - (NSInteger)numberOfColumnsAtPath:(NSIndexPath *)indexPath;
 
 /**
- *  @abstract Number of subrows at specified path
- *  @param indexPath - if nil, return number top level rows
+    @abstract Number of subrows at specified path
+    @param indexPath - if nil, return number top level rows
  */
 - (NSInteger)numberOfRowsAtPath:(NSIndexPath *)indexPath;
 
 /**
- *  @abstract Return height for row at specified path
+    @abstract Return height for row at specified path
  */
 - (CGFloat)heightForRowAtPath:(NSIndexPath *)indexPath;
 
 /**
- *  @abstract Return height for header section at specified path
+    @abstract Return height for header section at specified path
  */
 - (TSTableViewCell *)tableView:(TSTableView *)tableView cellViewForRowAtPath:(NSIndexPath *)indexPath cellIndex:(NSInteger)index;
 
 /**
- *  @abstract Return height for header section at specified path
+    @abstract Return height for header section at specified path
  */
 - (TSTableViewHeaderSectionView *)tableView:(TSTableView *)tableView headerSectionViewForColumnAtPath:(NSIndexPath *)indexPath;
 
 @optional
 
 /**
- *  @abstract Return height for header section at specified path
+    @abstract Return height for header section at specified path
  */
 - (CGFloat)heightForHeaderSectionAtPath:(NSIndexPath *)columnPath;
 
 /**
- *  @abstract Return width for expand item  in left side control of panel
- *            Total width of control panel would be calculated based on next expression: maxNesingLevel * widthForExpandItem                                           
- *            where maxNesingLevel is maximal depth of subrows hierarchy
+    @abstract Return width for expand item  in left side control of panel
+              Total width of control panel would be calculated based on next expression: maxNesingLevel * widthForExpandItem                                           
+              where maxNesingLevel is maximal depth of subrows hierarchy
  */
 - (CGFloat)widthForExpandItem;
 
 /**
- *  @abstract Return default/prefered width for column at specified index
+    @abstract Return default/prefered width for column at specified index
  */
 - (CGFloat)defaultWidthForColumnAtIndex:(NSInteger)index;
 
 /**
- *  @abstract Return minimal width for column at specified index
+    @abstract Return minimal width for column at specified index
  */
 - (CGFloat)minimalWidthForColumnAtIndex:(NSInteger)index;
 
 /**
- *  @abstract Return maximal width for column at specified index
+    @abstract Return maximal width for column at specified index
  */
 - (CGFloat)maximalWidthForColumnAtIndex:(NSInteger)index;
 

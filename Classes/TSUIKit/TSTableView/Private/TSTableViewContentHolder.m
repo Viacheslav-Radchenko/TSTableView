@@ -36,7 +36,7 @@
  
 
 /**
- *  @abstract Selection rectangle view
+    @abstract Selection rectangle view
  */
 
 @interface TSTableViewSelection : UIView

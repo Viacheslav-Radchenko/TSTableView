@@ -125,16 +125,18 @@
     
     if(_textLabel && _detailsLabel)
     {
-        [_textLabel sizeToFit];
-        [_detailsLabel sizeToFit];
+        CGSize textSize = [_textLabel sizeThatFits:CGSizeMake(self.bounds.size.width - x, self.bounds.size.height)];
+        textSize = CGSizeMake(MIN(textSize.width, self.bounds.size.width - x), MIN(textSize.height, self.bounds.size.height));
+        CGSize detailsSize = [_detailsLabel sizeThatFits:CGSizeMake(self.bounds.size.width - x, self.bounds.size.height)];
+        detailsSize = CGSizeMake(MIN(detailsSize.width, self.bounds.size.width - x), MIN(detailsSize.height, self.bounds.size.height));
         
         CGFloat offset = 2;
-        CGFloat height = _textLabel.frame.size.height + offset + _detailsLabel.frame.size.height;
+        CGFloat height = textSize.height + offset + detailsSize.height;
         y = (self.bounds.size.height - height)/2;
         y = MAX(0 , y);
-        _textLabel.frame = CGRectMake(x, y, self.bounds.size.width - x, _textLabel.frame.size.height);
-        y += _textLabel.frame.size.height + offset;
-        _detailsLabel.frame = CGRectMake(x, y, self.bounds.size.width - x, _detailsLabel.frame.size.height);
+        _textLabel.frame = CGRectMake(x, y, self.bounds.size.width - x, textSize.height);
+        y += textSize.height + offset;
+        _detailsLabel.frame = CGRectMake(x, y, self.bounds.size.width - x, detailsSize.height);
     }
     else if(_detailsLabel)
     {
@@ -142,7 +144,29 @@
     }
     else if(_textLabel)
     {
-        _textLabel.frame = CGRectMake(x, 0, self.bounds.size.width - x, self.bounds.size.height);
+        CGSize size = [_textLabel sizeThatFits:CGSizeMake(self.bounds.size.width - x, self.bounds.size.height)];
+        size = CGSizeMake(MIN(size.width, self.bounds.size.width - x), MIN(size.height, self.bounds.size.height));
+        if(_textLabel.textAlignment == NSTextAlignmentCenter)
+        {
+            _textLabel.frame = CGRectMake(x + (self.bounds.size.width - x - size.width)/2,
+                                          (self.bounds.size.height - size.height)/2,
+                                          size.width,
+                                          size.height);
+        }
+        else if(_textLabel.textAlignment == NSTextAlignmentLeft)
+        {
+            _textLabel.frame = CGRectMake(x,
+                                          (self.bounds.size.height - size.height)/2,
+                                          size.width,
+                                          size.height);
+        }
+        else
+        {
+            _textLabel.frame = CGRectMake(self.bounds.size.width - _textLabel.frame.size.width,
+                                          (self.bounds.size.height - _textLabel.frame.size.height)/2,
+                                          _textLabel.frame.size.width,
+                                          _textLabel.frame.size.height);
+        }
     }
 }
 

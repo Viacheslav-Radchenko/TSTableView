@@ -29,39 +29,42 @@
 
 @class TSTableViewExpandControlPanel;
 
+/** Provide delegate object that implement TSTableViewExpandControlPanelDelegate to TSTableViewExpandControlPanel to be notified on expand state changes. */
 @protocol TSTableViewExpandControlPanelDelegate <NSObject>
 
-/**
- *  @abstract Invoked when user manually changing expand state
+/** Invoked when user manually changing expand state 
+    @param controlPanel Instance of TSTableViewExpandControlPanel.
+    @param expand Updated expand state.
+    @param rowPath Path to row where state was changed.
  */
 - (void)tableViewSideControlPanel:(TSTableViewExpandControlPanel *)controlPanel expandStateDidChange:(BOOL)expand forRow:(NSIndexPath *)rowPath;
 
 @end
 
-/**
- *  @abstract TSTableViewExpandControlPanel is subcomponent of TSTableView. It represents rows hierarchy of the table.
- *            Base layout is shown below:
- *  +--------------------------------------------+
- *  | TSTableViewExpandSection                   |
- *  |                                            |
- *  |       +------------------------------------+
- *  |       |  TSTableViewExpandSection          |
- *  |       |                                    |
- *  |       |       +----------------------------+
- *  |       |       |  TSTableViewExpandSection  |                
- *  |       |       |                            |
- *  |       |       +----------------------------+
- *  |       |       |  TSTableViewExpandSection  |
- *  |       |       |                            |
- *  |       |       +----------------------------+                    
- *  |       |       |  TSTableViewExpandSection  |
- *  |       |       |                            |
- *  +-------+-------+----------------------------+
- */
-
 @protocol TSTableViewDataSource;
 @protocol TSTableViewAppearanceCoordinator;
 
+
+/** TSTableViewExpandControlPanel is subcomponent of TSTableView. It represents rows hierarchy of the table.
+    Base layout is shown below:
+ 
+ +--------------------------------------------+
+ | TSTableViewExpandSection                   |
+ |                                            |
+ |       +------------------------------------+
+ |       |  TSTableViewExpandSection          |
+ |       |                                    |
+ |       |       +----------------------------+
+ |       |       |  TSTableViewExpandSection  |
+ |       |       |                            |
+ |       |       +----------------------------+
+ |       |       |  TSTableViewExpandSection  |
+ |       |       |                            |
+ |       |       +----------------------------+
+ |       |       |  TSTableViewExpandSection  |
+ |       |       |                            |
+ +-------+-------+----------------------------+
+ */
 @interface TSTableViewExpandControlPanel : UIScrollView
 
 @property (nonatomic, weak) id<TSTableViewExpandControlPanelDelegate> controlPanelDelegate;
@@ -70,48 +73,48 @@
 @property (nonatomic, assign, readonly) NSInteger maxNestingLevel;
 
 /**
- *  @abstract Reload expand rows data
+    @abstract Reload expand rows data
  */
 - (void)reloadData;
 
 /**
- *  @abstract Change expand state of the row
+    @abstract Change expand state of the row
  */
 - (void)changeExpandStateForRow:(NSIndexPath *)rowPath toValue:(BOOL)expanded animated:(BOOL)animated;
 
 /**
- *  @abstract Expand all rows
+    @abstract Expand all rows
  */
 - (void)expandAllRowsWithAnimation:(BOOL)animated;
 
 /**
- *  @abstract Collapse all rows
+    @abstract Collapse all rows
  */
 - (void)collapseAllRowsWithAnimation:(BOOL)animated;
 
 /**
- *  @abstract Return row expand state
+    @abstract Return row expand state
  */
 - (BOOL)isRowExpanded:(NSIndexPath *)rowPath;
 
 /**
- *  @abstract Return YES if all its parents are expanded
+    @abstract Return YES if all its parents are expanded
  */
 - (BOOL)isRowVisible:(NSIndexPath *)rowPath;
 
 /**
- *  @abstract Height of the table taking into account expanded/collapsed rows
+    @abstract Height of the table taking into account expanded/collapsed rows
  */
 - (CGFloat)tableHeight;
 
 /**
- *  @abstract Height of the table with all rows expanded
+    @abstract Height of the table with all rows expanded
  */
 - (CGFloat)tableTotalHeight;
 
 /**
- *  @abstract Width of expand control panel. Updated in reloadData.
- *            Equal to maxNestingLevel * widthOfExpandItem
+    @abstract Width of expand control panel. Updated in reloadData.
+              Equal to maxNestingLevel * widthOfExpandItem
  */
 - (CGFloat)panelWidth;
 

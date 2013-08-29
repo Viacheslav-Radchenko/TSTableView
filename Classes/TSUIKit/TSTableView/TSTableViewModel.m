@@ -865,9 +865,16 @@
 
 #pragma mark - Create background images
 
+- (NSString *)keyForColor:(UIColor *)color
+{
+    if(!color) return @"";
+    const CGFloat *rgba = CGColorGetComponents(color.CGColor);
+    return [NSString stringWithFormat:@"%d%d%d%d", (char)(rgba[0] * 255), (char)(rgba[1] * 255), (char)(rgba[2] * 255), (char)(rgba[3] * 255)];
+}
+
 - (UIImage *)cellBackgroundImageWithTintColor:(UIColor *)color
 {
-    id key = (color ? color : [NSNull null]);
+    NSString *key = [self keyForColor:color];
     UIImage *image = _cachedCellBackgroundImages[key];
     if(!image)
     {
@@ -882,7 +889,7 @@
 
 - (UIImage *)headerSectionBackgroundImageWithTintColor:(UIColor *)color
 {
-    id key = (color ? color : [NSNull null]);
+    NSString *key = [self keyForColor:color];
     UIImage *image = _cachedHeaderSectionBackgroundImages[key];
     if(!image)
     {

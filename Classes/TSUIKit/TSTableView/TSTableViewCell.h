@@ -28,11 +28,11 @@
 #import <UIKit/UIKit.h>
 
 /**
- *  @abstract   TSTableViewCell is base class for cell in TSTableView row.
- *              Inherit from TSTableViewCell to provide additinal functionality or another appearance.
+    @abstract   TSTableViewCell is base class for cell in TSTableView row.
+                Inherit from TSTableViewCell to provide additinal functionality or another appearance.
  *
- *  @remark     textLabel, detailsLabel, iconView and backgroundImageView - are lazy loaded on first call.
- *              If your code wouldn't use these properties they wouldn't be part of TSTableViewHeaderSectionView hierarchy.
+    @remark     textLabel, detailsLabel, iconView and backgroundImageView - are lazy loaded on first call.
+                If your code wouldn't use these properties they wouldn't be part of TSTableViewHeaderSectionView hierarchy.
  */
 
 @interface TSTableViewCell : UIView
@@ -46,8 +46,8 @@
 - (id)initWithReuseIdentifier:(NSString *)reuseId;
 
 /**
- *  @abstract   Override to reset cell settings before it would be reused.
- *              Method would be called by owner object before return cell from reuse queue.
+    @abstract   Override to reset cell settings before it would be reused.
+                Method would be called by owner object before return cell from reuse queue.
  */
 - (void)prepareForReuse;
 

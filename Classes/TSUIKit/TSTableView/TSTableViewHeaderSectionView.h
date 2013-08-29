@@ -28,11 +28,11 @@
 #import <UIKit/UIKit.h>
 
 /**
- *  @abstract   TSTableViewHeaderSectionView is base class for section view in header  panel.
- *              Inherit from TSTableViewHeaderSectionView to provide additinal functionality or another appearance.
+    @abstract   TSTableViewHeaderSectionView is base class for section view in header  panel.
+                Inherit from TSTableViewHeaderSectionView to provide additinal functionality or another appearance.
  *
- *  @remark     textLabel, detailsLabel, iconView and backgroundImageView - are lazy loaded on first call. 
- *              If your code wouldn't use these properties they wouldn't be part of TSTableViewHeaderSectionView hierarchy.
+    @remark     textLabel, detailsLabel, iconView and backgroundImageView - are lazy loaded on first call. 
+                If your code wouldn't use these properties they wouldn't be part of TSTableViewHeaderSectionView hierarchy.
  */
 @interface TSTableViewHeaderSectionView : UIView
 

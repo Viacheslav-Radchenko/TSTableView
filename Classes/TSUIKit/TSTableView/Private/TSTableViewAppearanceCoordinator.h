@@ -28,88 +28,88 @@
 #import <Foundation/Foundation.h>
 
 /**
- *  @abstract TSTableViewAppearanceCoordinator is internal protocol for configuring TSTableView appearance. It's implemented by TSTableView.
+    @abstract TSTableViewAppearanceCoordinator is internal protocol for configuring TSTableView appearance. It's implemented by TSTableView.
  */
 
 @protocol TSTableViewAppearanceCoordinator <NSObject>
 
 /**
- *  @abstract Return YES if row at specified path is expanded
+    @abstract Return YES if row at specified path is expanded
  */
 - (BOOL)isRowExpanded:(NSIndexPath *)indexPath;
 
 /**
- *  @abstract Return YES if row is visible, i.g. all its parent rows are expanded
+    @abstract Return YES if row is visible, i.g. all its parent rows are expanded
  */
 - (BOOL)isRowVisible:(NSIndexPath *)indexPath;
 
 /**
- *  @abstract Highlight contorls (slide button in header section and expand button in control panel) on tap
+    @abstract Highlight contorls (slide button in header section and expand button in control panel) on tap
  */
 - (BOOL)highlightControlsOnTap;
 
 /**
- *  @abstract Return YES if line numbers for rows shoulb be displayed in control panel
+    @abstract Return YES if line numbers for rows shoulb be displayed in control panel
  */
 - (BOOL)lineNumbersAreHidden;
 
 /**
- *  @abstract Color for line  numbers in expand control panel.
+    @abstract Color for line  numbers in expand control panel.
  */
 - (UIColor *)lineNumbersColor;
 
 /**
- *  @abstract Image for expand button normal state (not expanded). Image wouldn't be stretched and will be aligned to bottom left corner of expand section.
+    @abstract Image for expand button normal state (not expanded). Image wouldn't be stretched and will be aligned to bottom left corner of expand section.
  */
 - (UIImage *)controlPanelExpandItemNormalBackgroundImage;
 
 /**
- *  @abstract Image for expand button selected state (expanded). Image wouldn't be stretched and will be aligned to bottom left corner of expand section.
+    @abstract Image for expand button selected state (expanded). Image wouldn't be stretched and will be aligned to bottom left corner of expand section.
  */
 - (UIImage *)controlPanelExpandItemSelectedBackgroundImage;
 
 /**
- *  @abstract Background image for expand section. Image would be stretched depending on section's size.
+    @abstract Background image for expand section. Image would be stretched depending on section's size.
  */
 - (UIImage *)controlPanelExpandSectionBackgroundImage;
 
 /**
- *  @abstract Return total width of all columns
+    @abstract Return total width of all columns
  */
 - (CGFloat)tableTotalWidth;
 
 /**
- *  @abstract Return total height of all rows
+    @abstract Return total height of all rows
  */
 - (CGFloat)tableTotalHeight;
 
 /**
- *  @abstract Return height of all visible (not expanded) rows
+    @abstract Return height of all visible (not expanded) rows
  */
 - (CGFloat)tableHeight;
 
 /**
- *  @abstract Return current width for column at specified index
+    @abstract Return current width for column at specified index
  */
 - (CGFloat)widthForColumnAtIndex:(NSInteger)columnIndex;
 
 /**
- *  @abstract Return current width for column at specified path
+    @abstract Return current width for column at specified path
  */
 - (CGFloat)widthForColumnAtPath:(NSIndexPath *)columnPath;
 
 /**
- *  @abstract Return x offset for column at specified path
+    @abstract Return x offset for column at specified path
  */
 - (CGFloat)offsetForColumnAtPath:(NSIndexPath *)columnPath;
 
 /**
- *  @abstract Return height for header section at specified path
+    @abstract Return height for header section at specified path
  */
 - (TSTableViewCell *)cellViewForRowAtPath:(NSIndexPath *)indexPath cellIndex:(NSInteger)index;
 
 /**
- *  @abstract Return height for header section at specified path
+    @abstract Return height for header section at specified path
  */
 - (TSTableViewHeaderSectionView *)headerSectionViewForColumnAtPath:(NSIndexPath *)indexPath;
 

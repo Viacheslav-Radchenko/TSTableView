@@ -31,29 +31,29 @@
 #import "TSTableViewDelegate.h"
 
 /**
- *  @abstract   TSTableView is UI component for displaying multicolumns tabular data. It supports hierarchical rows and columns structure.
- *              Component optimized to display big sets of data: row and cell views are cached internaly and reused during scrolling/expanding.
- *              Basic layout is shown below:
+    @abstract   TSTableView is UI component for displaying multicolumns tabular data. It supports hierarchical rows and columns structure.
+                Component optimized to display big sets of data: row and cell views are cached internaly and reused during scrolling/expanding.
+                Basic layout is shown below:
  *
- *  +-----+-------------------------------------------+
- *  |     |          TSTableViewHeaderPanel           |  
- *  +-----+-------------------------------------------+
- *  |     |                                           |
- *  |  T  |                                           |
- *  |  S  |                                           |
- *  |  S  |                                           | 
- *  |  i  |                                           |
- *  |  d  |                                           |
- *  |  e  |                                           |
- *  |  C  |                                           |
- *  |  o  |        TSTableViewContentHolder           |
- *  |  n  |                                           |
- *  |  t  |                                           |
- *  |  r  |                                           |
- *  |  o  |                                           |
- *  |  l  |                                           |
- *  |     |                                           |
- *  +-----+-------------------------------------------+
+    +-----+-------------------------------------------+
+    |     |          TSTableViewHeaderPanel           |  
+    +-----+-------------------------------------------+
+    |     |                                           |
+    |  T  |                                           |
+    |  S  |                                           |
+    |  S  |                                           | 
+    |  i  |                                           |
+    |  d  |                                           |
+    |  e  |                                           |
+    |  C  |                                           |
+    |  o  |        TSTableViewContentHolder           |
+    |  n  |                                           |
+    |  t  |                                           |
+    |  r  |                                           |
+    |  o  |                                           |
+    |  l  |                                           |
+    |     |                                           |
+    +-----+-------------------------------------------+
  *
  *
  */
@@ -64,159 +64,159 @@
 @property (nonatomic, weak) id<TSTableViewDelegate> delegate;
 
 /**
- *  @abstract Maximum nesting level in rows hierarchy
+    @abstract Maximum nesting level in rows hierarchy
  */
 @property (nonatomic, assign, readonly) NSInteger maxNestingLevel;
 
 /**
- *  @abstract Show hihlights when user taps control (slide control in header secrion and expand control in side panel)
+    @abstract Show hihlights when user taps control (slide control in header secrion and expand control in side panel)
  */
 @property (nonatomic, assign) BOOL highlightControlsOnTap;
 
 /**
- *  @abstract Allow row selection on tap
- *  @def YES
+    @abstract Allow row selection on tap
+    @def YES
  */
 @property (nonatomic, assign) BOOL allowRowSelection;
 
 /**
- *  @abstract Allow column selection on tap
- *  @def YES
+    @abstract Allow column selection on tap
+    @def YES
  */
 @property (nonatomic, assign) BOOL allowColumnSelection;
 
 /**
- *  @abstract If NO then line numbers are displayed in side panel
+    @abstract If NO then line numbers are displayed in side panel
  */
 @property (nonatomic, assign) BOOL lineNumbersHidden;
 
 /**
- *  @abstract If YES then header niew isn't shown
- *  @def NO
+    @abstract If YES then header niew isn't shown
+    @def NO
  */
 @property (nonatomic, assign) BOOL headerPanelHidden;
 
 /**
- *  @abstract If YES then expand niew isn't shown
- *  @def NO
+    @abstract If YES then expand niew isn't shown
+    @def NO
  */
 @property (nonatomic, assign) BOOL expandPanelHidden;
 
 /**
- *  @abstract Color for row line numbers in side panel
+    @abstract Color for row line numbers in side panel
  */
 @property (nonatomic, strong) UIColor *lineNumbersColor;
 
 /**
- *  @abstract Set background image for header panel to customize appearance
+    @abstract Set background image for header panel to customize appearance
  */
 @property (nonatomic, strong) UIImage *headerBackgroundImage;
 
 /**
- *  @abstract Set background image for expand panel to customize appearance
+    @abstract Set background image for expand panel to customize appearance
  */
 @property (nonatomic, strong) UIImage *expandPanelBackgroundImage;
 
 /**
- *  @abstract Set background image for top left panel to customize appearance
+    @abstract Set background image for top left panel to customize appearance
  */
 @property (nonatomic, strong) UIImage *topLeftCornerBackgroundImage;
 
 /**
- *  @abstract  This image is used for expand item control in normal (not expanded) state.
- *             Image wouldn't be stretched and will have bottom left alignment
+    @abstract  This image is used for expand item control in normal (not expanded) state.
+               Image wouldn't be stretched and will have bottom left alignment
  */
 @property (nonatomic, strong) UIImage *expandItemNormalBackgroundImage;
 
 /**
- *  @abstract  This image is used for expand item control in selected (expanded) state.
- *             Image wouldn't be stretched and will have bottom left alignment
+    @abstract  This image is used for expand item control in selected (expanded) state.
+               Image wouldn't be stretched and will have bottom left alignment
  */
 @property (nonatomic, strong) UIImage *expandItemSelectedBackgroundImage;
 
 /**
- *  @abstract  Provide background image for expand section in side control panel.
- *             Image would be stretched depending on the size of section.
+    @abstract  Provide background image for expand section in side control panel.
+               Image would be stretched depending on the size of section.
  */
 @property (nonatomic, strong) UIImage *expandSectionBackgroundImage;
 
 /**
- *  @abstract  Background color for header panel
+    @abstract  Background color for header panel
  */
 @property (nonatomic, strong) UIColor *headerBackgroundColor;
 
 /**
- *  @abstract  Background color for expand panel
+    @abstract  Background color for expand panel
  */
 @property (nonatomic, strong) UIColor *expandPanelBackgroundColor;
 
 /**
- *  @abstract Reload content. Both columns and rows are updated
+    @abstract Reload content. Both columns and rows are updated
  */
 - (void)reloadData;
 
 /**
- *  @abstract Reload rows data
+    @abstract Reload rows data
  */
 - (void)reloadRowsData;
 
 /**
- *  @abstract Reuse cached instance of cell view with specified Id.
+    @abstract Reuse cached instance of cell view with specified Id.
  */
 - (TSTableViewCell *)dequeueReusableCellViewWithIdentifier:(NSString *)identifier;
 
 /**
- *  @abstract Clear cached data (reusable rows, cells that aren't used at this moment).
+    @abstract Clear cached data (reusable rows, cells that aren't used at this moment).
  */
 - (void)clearCachedData;
 
 /**
- *  @abstract Change expand state of the row
+    @abstract Change expand state of the row
  */
 - (void)changeExpandStateForRow:(NSIndexPath *)rowPath toValue:(BOOL)expanded animated:(BOOL)animated;
 
 /**
- *  @abstract Expand all rows
+    @abstract Expand all rows
  */
 - (void)expandAllRowsWithAnimation:(BOOL)animated;
 
 /**
- *  @abstract Collapse all rows
+    @abstract Collapse all rows
  */
 - (void)collapseAllRowsWithAnimation:(BOOL)animated;
 
 /**
- *  @abstract Select row at path
+    @abstract Select row at path
  */
 - (void)selectRowAtPath:(NSIndexPath *)rowPath animated:(BOOL)animated;
 
 /**
- *  @abstract Hide current selection
+    @abstract Hide current selection
  */
 - (void)resetRowSelectionWithAnimtaion:(BOOL)animated;
 
 /**
- *  @abstract Select row at path
+    @abstract Select row at path
  */
 - (void)selectColumnAtPath:(NSIndexPath *)rowPath animated:(BOOL)animated;
 
 /**
- *  @abstract Hide current selection
+    @abstract Hide current selection
  */
 - (void)resetColumnSelectionWithAnimtaion:(BOOL)animated;
 
 /**
- *  @abstract Return path to selected row. If no row currently selected return nil.
+    @abstract Return path to selected row. If no row currently selected return nil.
  */
 - (NSIndexPath *)pathToSelectedRow;
 
 /**
- *  @abstract Return path to selected column. If no column currently selected return nil.
+    @abstract Return path to selected column. If no column currently selected return nil.
  */
 - (NSIndexPath *)pathToSelectedColumn;
 
 /**
- *  @abstract Modify content
+    @abstract Modify content
  */
 - (void)insertRowAtPath:(NSIndexPath *)path animated:(BOOL)animated;
 - (void)removeRowAtPath:(NSIndexPath *)path animated:(BOOL)animated;

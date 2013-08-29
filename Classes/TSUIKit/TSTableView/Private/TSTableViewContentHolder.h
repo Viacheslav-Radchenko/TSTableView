@@ -33,17 +33,17 @@
 @protocol TSTableViewContentHolderDelegate <NSObject>
 
 /**
- *  @abstract Invoked when user manually changing content offset (i.e. scrolling)
+    @abstract Invoked when user manually changing content offset (i.e. scrolling)
  */
 - (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder contentOffsetDidChange:(CGPoint)contentOffset animated:(BOOL)animated;
 /**
- *  @abstract Invoked when user manually changing row selection (i.e. tap on row)
+    @abstract Invoked when user manually changing row selection (i.e. tap on row)
  */
 - (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder willSelectRowAtPath:(NSIndexPath *)rowPath animated:(BOOL)animated;
 - (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder didSelectRowAtPath:(NSIndexPath *)rowPath;
 
 /**
- *  @abstract Invoked when user manually changing column selection (i.e. tap on column header)
+    @abstract Invoked when user manually changing column selection (i.e. tap on column header)
  */
 - (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder willSelectColumnAtPath:(NSIndexPath *)columnPath animated:(BOOL)animated;
 - (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder didSelectColumnAtPath:(NSIndexPath *)columnPath;
@@ -51,7 +51,7 @@
 @end
 
 /**
- *  @abstract TSTableViewContentHolder is subcomponent of TSTableView. It displays rows hierarchy.
+    @abstract TSTableViewContentHolder is subcomponent of TSTableView. It displays rows hierarchy.
  */
 
 @protocol TSTableViewDataSource;
@@ -63,83 +63,83 @@
 @property (nonatomic, weak) id<TSTableViewDataSource, TSTableViewAppearanceCoordinator> dataSource;
 
 /**
- *  @abstract Color of column selection outline
+    @abstract Color of column selection outline
  */
 @property (nonatomic, strong) UIColor *columnSelectionColor;
 
 /**
- *  @abstract Color of row selection outline
+    @abstract Color of row selection outline
  */
 @property (nonatomic, strong) UIColor *rowSelectionColor;
 
 /**
- *  @abstract Allow row selection on tap
- *  @def YES
+    @abstract Allow row selection on tap
+    @def YES
  */
 @property (nonatomic, assign) BOOL allowRowSelection;
 
 /**
- *  @abstract Reload column data
+    @abstract Reload column data
  */
 - (void)reloadData;
 
 /**
- *  @abstract Change width of specified column
+    @abstract Change width of specified column
  */
 - (void)changeColumnWidthOnAmount:(CGFloat)delta forColumn:(NSInteger)columnIndex animated:(BOOL)animated;
 
 /**
- *  @abstract Change expand state of the row
+    @abstract Change expand state of the row
  */
 - (void)changeExpandStateForRow:(NSIndexPath *)rowPath toValue:(BOOL)expanded animated:(BOOL)animated;
 
 /**
- *  @abstract Expand all rows
+    @abstract Expand all rows
  */
 - (void)expandAllRowsWithAnimation:(BOOL)animated;
 
 /**
- *  @abstract Collapse all rows
+    @abstract Collapse all rows
  */
 - (void)collapseAllRowsWithAnimation:(BOOL)animated;
 
 /**
- *  @abstract Select row at path
+    @abstract Select row at path
  */
 - (void)selectRowAtPath:(NSIndexPath *)rowPath animated:(BOOL)animated;
 
 /**
- *  @abstract Select column at path
+    @abstract Select column at path
  */
 - (void)selectColumnAtPath:(NSIndexPath *)columnPath animated:(BOOL)animated;
 
 /**
- *  @abstract Hide current row selection
+    @abstract Hide current row selection
  */
 - (void)resetRowSelectionWithAnimtaion:(BOOL)animated;
 
 /**
- *  @abstract Hide current row selection
+    @abstract Hide current row selection
  */
 - (void)resetColumnSelectionWithAnimtaion:(BOOL)animated;
 
 /**
- *  @abstract Return path to selected row. If no row currently selected return nil.
+    @abstract Return path to selected row. If no row currently selected return nil.
  */
 - (NSIndexPath *)pathToSelectedRow;
 
 /**
- *  @abstract Return path to selected column. If no column currently selected return nil.
+    @abstract Return path to selected column. If no column currently selected return nil.
  */
 - (NSIndexPath *)pathToSelectedColumn;
 
 /**
- *  @abstract Reuse cached instance of cell view with specified Id.
+    @abstract Reuse cached instance of cell view with specified Id.
  */
 - (TSTableViewCell *)dequeueReusableCellViewWithIdentifier:(NSString *)identifier;
 
 /**
- *  @abstract Clear cached data (reusable rows, cells that aren't used at this moment).
+    @abstract Clear cached data (reusable rows, cells that aren't used at this moment).
  */
 - (void)clearCachedData;
 

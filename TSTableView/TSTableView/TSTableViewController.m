@@ -81,6 +81,12 @@
 //                     [self rowExample1],
 //                     [self rowExample2],
 //                     ];
+    
+    _rowExamples = @[
+                     [self rowForDummyFile],
+                     [self rowForDummyFile],
+                     ];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -104,11 +110,8 @@
             if(!rowPath)
                 rowPath = [NSIndexPath indexPathWithIndex:0];
             
-            if(_rowExamples)
-            {
-                TSRow *row = _rowExamples[i];
-                [model insertRow:row atPath:rowPath];
-            }
+            TSRow *row = _rowExamples[i];
+            [model insertRow:row atPath:rowPath];
         }
     }
     else
@@ -298,6 +301,20 @@
         [rows addObject:row];
     }
     return [NSArray arrayWithArray:rows];
+}
+
+- (TSRow *)rowForDummyFile
+{
+    TSRow *row = [TSRow rowWithDictionary:@{
+                  @"cells" : @[
+                  @{@"value" : @"New File"},
+                  @{@"value" : @"-"},
+                  @{@"value" : @"-"},
+                  @{@"value" : @"-"}
+                  ],
+                }];
+    return row;
+
 }
 
 
