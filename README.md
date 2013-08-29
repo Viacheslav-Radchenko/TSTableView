@@ -61,8 +61,8 @@ Result of code snippet is shown below, as well as more complex example displayin
 
 ## Links
 
-Parent repository [TSUIKit](https://github.com/Viacheslav-Radchenko/TSUIKit).
-Demo video [TSTableView](http://youtu.be/Zd2CGbj0yUU).
+* Parent repository [TSUIKit](https://github.com/Viacheslav-Radchenko/TSUIKit).
+* Demo video [TSTableView](http://youtu.be/Zd2CGbj0yUU).
 
 ## Requirements
 
