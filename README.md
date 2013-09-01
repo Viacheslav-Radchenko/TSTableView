@@ -51,7 +51,7 @@ Example of TSTableView object instantiation provided below.
     [self.view addSubview:tableView];
     
     TSTableViewModel  *dataModel = [[TSTableViewModel alloc] initWithTableView:tableView andStyle:kTSTableViewStyleDark];
-    [dataModel setColumnsInfo:columns andRowsInfo:rows];
+    [dataModel setColumns:columns andRows:rows];
 
 ```
 Result of code snippet is shown below, as well as more complex example displaying file system tree using `TSTableView`.
@@ -77,7 +77,12 @@ Build and run the `TSTableView` project in Xcode to see examples.
 
 ## Installation
 
-All you need to do is drop source files from `Classes\TSUIKit` folder into your project and add `#include "TSTableView.h"`.
+The easiest way to integrate TSUIKit is using CocoaPods. Just add this to your Podfile:
+```
+            pod 'TSUIKit', '~> 0.1' 
+```
+
+Other option is to drop source files from `Classes\TSUIKit` folder into your project and add `#include "TSTableView.h"`.
 
 ## Contact
 
