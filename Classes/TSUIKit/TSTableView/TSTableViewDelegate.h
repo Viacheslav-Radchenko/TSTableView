@@ -31,10 +31,10 @@
 
 @protocol TSTableViewDelegate <NSObject>
 
-- (void)tableView:(TSTableView *)tableView didSelectRowAtPath:(NSIndexPath *)rowPath;
+- (void)tableView:(TSTableView *)tableView didSelectRowAtPath:(NSIndexPath *)rowPath selectedCell:(NSInteger)cellIndex;
 
 @optional
-- (void)tableView:(TSTableView *)tableView willSelectRowAtPath:(NSIndexPath *)rowPath animated:(BOOL)animated;
+- (void)tableView:(TSTableView *)tableView willSelectRowAtPath:(NSIndexPath *)rowPath selectedCell:(NSInteger)cellIndex animated:(BOOL)animated;
 - (void)tableView:(TSTableView *)tableView willSelectColumnAtPath:(NSIndexPath *)columnPath animated:(BOOL)animated;
 - (void)tableView:(TSTableView *)tableView didSelectColumnAtPath:(NSIndexPath *)columnPath;
 - (void)tableView:(TSTableView *)tableView widthDidChangeForColumnAtIndex:(NSInteger)columnIndex;

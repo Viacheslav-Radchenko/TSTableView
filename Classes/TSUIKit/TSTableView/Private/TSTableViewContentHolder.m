@@ -650,10 +650,10 @@
 - (void)selectRowAtPath:(NSIndexPath *)rowPath animated:(BOOL)animated
 {
     VerboseLog();
-    [self selectRowAtPath:rowPath animated:animated internal:NO];
+    [self selectRowAtPath:rowPath selectedCell:0 animated:animated internal:NO];
 }
 
-- (void)selectRowAtPath:(NSIndexPath *)rowPath animated:(BOOL)animated internal:(BOOL)internal
+- (void)selectRowAtPath:(NSIndexPath *)rowPath selectedCell:(NSInteger)cellIndex animated:(BOOL)animated internal:(BOOL)internal
 {
     VerboseLog();
     if(![self.dataSource isRowVisible:rowPath])
@@ -668,7 +668,7 @@
     
     if(internal && self.contentHolderDelegate)
     {
-        [self.contentHolderDelegate tableViewContentHolder:self willSelectRowAtPath:rowPath animated:animated];
+        [self.contentHolderDelegate tableViewContentHolder:self willSelectRowAtPath:rowPath selectedCell:cellIndex animated:animated];
     }
     
     CGRect rect = CGRectZero;
@@ -696,7 +696,7 @@
     } withCompletion:^{
         if(internal && self.contentHolderDelegate)
         {
-            [self.contentHolderDelegate tableViewContentHolder:self didSelectRowAtPath:rowPath];
+            [self.contentHolderDelegate tableViewContentHolder:self didSelectRowAtPath:rowPath selectedCell:cellIndex];
         }
     } animated:animated];
 }
@@ -762,13 +762,13 @@
 - (void)updateRowSelectionWithAnimation:(BOOL)animated
 {
     if(_rowSelectionView && _rowSelectionView.selectedItem)
-        [self selectRowAtPath:self.rowSelectionView.selectedItem animated:animated internal:NO];
+        [self selectRowAtPath:self.rowSelectionView.selectedItem animated:animated];
 }
 
 - (void)updateColumnSelectionWithAnimation:(BOOL)animated
 {
     if(_columnSelectionView && _columnSelectionView.selectedItem)
-        [self selectColumnAtPath:self.columnSelectionView.selectedItem animated:animated internal:NO];
+        [self selectColumnAtPath:self.columnSelectionView.selectedItem animated:animated];
 }
 
 - (NSIndexPath *)pathToSelectedRow
@@ -789,9 +789,24 @@
     {
         CGPoint pos = [recognizer locationInView:self];
         NSIndexPath *rowIndexPath = [self findRowAtPosition:pos parentRow:nil parentPowPath:nil];
+
         if(rowIndexPath)
         {
-            [self selectRowAtPath:rowIndexPath animated:YES internal:YES];
+            NSInteger numberOfColumns = [self.dataSource numberOfColumns];
+            NSInteger cellIndex = 0;
+            CGFloat xOffset = 0;
+            for(int i = 0; i < numberOfColumns; ++i)
+            {
+                CGFloat width = [self.dataSource widthForColumnAtIndex:i];
+                if(xOffset < pos.x && pos.x <= xOffset + width)
+                {
+                    cellIndex = i;
+                    break;
+                }
+                xOffset += width;
+            }
+            
+            [self selectRowAtPath:rowIndexPath selectedCell:cellIndex animated:YES internal:YES];
         }
     }
 }
@@ -847,7 +862,7 @@
     
     [self updateLayoutAnimated:animated];
     [self updateRowsVisibility];
-    [self updateCurrectSelectionOnInsertRowAtPath:path animated:animated];
+    [self updateCurrentSelectionOnInsertRowAtPath:path animated:animated];
 }
 
 - (void)removeRowAtPath:(NSIndexPath *)path animated:(BOOL)animated
@@ -862,7 +877,7 @@
         rows = row.subrows;
     }
     
-    // Find position where new row should be inserted
+    // Find position where row should be removed
     NSInteger lastIndex = [path indexAtPosition:path.length - 1];
     TSTableViewRowProxy *removedRow = rows[lastIndex];
     if(removedRow.rowView)
@@ -873,7 +888,7 @@
     
     [self updateLayoutAnimated:animated];
     [self updateRowsVisibility];
-    [self updateCurrectSelectionOnRemoveRowAtPath:path animated:animated];
+    [self updateCurrentSelectionOnRemoveRowAtPath:path animated:animated];
 }
 
 - (void)updateRowAtPath:(NSIndexPath *)path
@@ -914,7 +929,7 @@
 
 #pragma mark - Update selection on row insert/remove
 
-- (void)updateCurrectSelectionOnRemoveRowAtPath:(NSIndexPath *)path animated:(BOOL)animated
+- (void)updateCurrentSelectionOnRemoveRowAtPath:(NSIndexPath *)path animated:(BOOL)animated
 {
     // update selection
     if(_rowSelectionView.selectedItem)
@@ -975,7 +990,7 @@
     [self updateColumnSelectionWithAnimation:animated];
 }
 
-- (void)updateCurrectSelectionOnInsertRowAtPath:(NSIndexPath *)path animated:(BOOL)animated
+- (void)updateCurrentSelectionOnInsertRowAtPath:(NSIndexPath *)path animated:(BOOL)animated
 {
     // update selection
     if(_rowSelectionView.selectedItem)
@@ -984,7 +999,7 @@
         {
             NSInteger lastIndex = [path indexAtPosition:path.length - 1];
             NSIndexPath *baseIndexPath = [path indexPathByRemovingLastIndex];
-            [self selectRowAtPath:[baseIndexPath indexPathByAddingIndex:lastIndex + 1] animated:animated internal:NO];
+            [self selectRowAtPath:[baseIndexPath indexPathByAddingIndex:lastIndex + 1] animated:animated];
         }
         else if(_rowSelectionView.selectedItem.length > path.length)
         {

@@ -385,21 +385,21 @@
     [_tableHeader setContentOffset:CGPointMake(contentOffset.x, self.tableHeader.contentOffset.y) animated:animated];
 }
 
-- (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder willSelectRowAtPath:(NSIndexPath *)rowPath animated:(BOOL)animated
+- (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder willSelectRowAtPath:(NSIndexPath *)rowPath selectedCell:(NSInteger)cellIndex animated:(BOOL)animated
 {
     VerboseLog();
-    if(self.delegate && [self.delegate respondsToSelector:@selector(tableView:willSelectRowAtPath:animated:)])
+    if(self.delegate && [self.delegate respondsToSelector:@selector(tableView:willSelectRowAtPath:selectedCell:animated:)])
     {
-        [self.delegate tableView:self willSelectRowAtPath:rowPath animated:animated];
+        [self.delegate tableView:self willSelectRowAtPath:rowPath selectedCell:cellIndex animated:animated];
     }
 }
 
-- (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder didSelectRowAtPath:(NSIndexPath *)rowPath
+- (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder didSelectRowAtPath:(NSIndexPath *)rowPath selectedCell:(NSInteger)cellIndex
 {
     VerboseLog();
     if(self.delegate)
     {
-        [self.delegate tableView:self didSelectRowAtPath:rowPath];
+        [self.delegate tableView:self didSelectRowAtPath:rowPath selectedCell:cellIndex];
     }
 }
 

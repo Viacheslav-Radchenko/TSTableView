@@ -305,28 +305,15 @@ typedef enum {
  */
 - (id)initWithTableView:(TSTableView *)tableView andStyle:(TSTableViewStyle)style;
 
-/** Initialize with array of TSColumn objects and array TSRow objects.
-    @param columns Array with TSColumn objects.
-    @param rows Array with TSRow objects.
+/** Initialize with array of columns and rows.
+    @param columns Array can contain objects of mixed types (TSColumn, NSDictionary, NSString). TSColumn objects would be constructed if needed.  
+    @param rows Array can contain objects of mixed types (TSRow, NSDictionary, NSString). TSRow objects would be constructed if needed.
  */
 - (void)setColumns:(NSArray *)columns andRows:(NSArray *)rows;
-
-/** Initialize with array of NSDictionary decriptions for columns and array of NSDictionary decriptions for rows. 
-    @param columns Array with columns information.
-    @param rows Array with rows data.
- */
-- (void)setColumnsInfo:(NSArray *)columns andRowsInfo:(NSArray *)rows;
-
-/** Initialize with array of TSRow objects. Columns hierarchy remains the same. 
-    @param rows Array with TSRow objects.
+/** Initialize with rows data. Columns hierarchy remains the same. 
+    @param rows  Array can contain objects of mixed types (TSRow, NSDictionary, NSString). TSRow objects would be constructed if needed.
  */
 - (void)setRows:(NSArray *)rows;
-
-/** Initialize with array of NSDictionary decriptions for rows. Rows hierarchy remains the same. 
-    @param rows Array with rows data.
- */
-- (void)setRowsInfo:(NSArray *)rows;
-
 /** Insert new row at specified path. TSTableView would be notified about changes in data model. 
     @param rowInfo TSRow instance with new data.
     @param indexPath Insert positon.

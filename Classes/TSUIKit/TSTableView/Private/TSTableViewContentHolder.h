@@ -36,11 +36,20 @@
     @abstract Invoked when user manually changing content offset (i.e. scrolling)
  */
 - (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder contentOffsetDidChange:(CGPoint)contentOffset animated:(BOOL)animated;
-/**
-    @abstract Invoked when user manually changing row selection (i.e. tap on row)
+
+/** Invoked when user manually changing row selection (i.e. tap on row)
+ @param contentHolder - Instance of TSTableViewContentHolder class.
+ @param rowPath - Instance of TSTableViewContentHolder class.
+ @param cellIndex - Index of selected cell (cell that was tapped). 
  */
-- (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder willSelectRowAtPath:(NSIndexPath *)rowPath animated:(BOOL)animated;
-- (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder didSelectRowAtPath:(NSIndexPath *)rowPath;
+- (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder willSelectRowAtPath:(NSIndexPath *)rowPath selectedCell:(NSInteger)cellIndex animated:(BOOL)animated;
+
+/** Invoked when user manually changing row selection (i.e. tap on row)
+ @param contentHolder - Instance of TSTableViewContentHolder class.
+ @param rowPath - Instance of TSTableViewContentHolder class.
+ @param cellIndex - Index of selected cell (cell that was tapped).
+ */
+- (void)tableViewContentHolder:(TSTableViewContentHolder *)contentHolder didSelectRowAtPath:(NSIndexPath *)rowPath selectedCell:(NSInteger)cellIndex;
 
 /**
     @abstract Invoked when user manually changing column selection (i.e. tap on column header)

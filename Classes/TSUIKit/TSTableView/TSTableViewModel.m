@@ -116,20 +116,29 @@
     {
         _title = info[@"title"];
         _subtitle = info[@"subtitle"];
-        NSString *iconName = info[@"icon"];
-        if(iconName)
-            _icon = [UIImage imageNamed:iconName];
-        NSString *colorStr = info[@"color"];
-        if(colorStr)
-            _color = [TSUtils colorWithHexString:colorStr];
+        id iconVal = info[@"icon"];
+        if([iconVal isKindOfClass:[UIImage class]])
+            _icon = iconVal;
+        else if([iconVal isKindOfClass:[NSString class]])
+            _icon = [UIImage imageNamed:iconVal];
         
-        colorStr = info[@"titleColor"];
-        if(colorStr)
-            _titleColor = [TSUtils colorWithHexString:colorStr];
+        id colorVal = info[@"color"];
+        if([colorVal isKindOfClass:[UIColor class]])
+            _color = colorVal;
+        else if([colorVal isKindOfClass:[NSString class]])
+            _color = [TSUtils colorWithHexString:colorVal];
         
-        colorStr = info[@"subtitleColor"];
-        if(colorStr)
-            _subtitleColor = [TSUtils colorWithHexString:colorStr];
+        colorVal = info[@"titleColor"];
+        if([colorVal isKindOfClass:[UIColor class]])
+            _titleColor = colorVal;
+        else if([colorVal isKindOfClass:[NSString class]])
+            _titleColor = [TSUtils colorWithHexString:colorVal];
+        
+        colorVal = info[@"subtitleColor"];
+        if([colorVal isKindOfClass:[UIColor class]])
+            _subtitleColor = colorVal;
+        else if([colorVal isKindOfClass:[NSString class]])
+            _subtitleColor = [TSUtils colorWithHexString:colorVal];
 
         _titleFontSize = [info[@"titleFontSize"] floatValue];
         _subtitleFontSize = [info[@"subtitleFontSize"] floatValue];
@@ -166,7 +175,11 @@
             NSMutableArray *tmpColumns = [[NSMutableArray alloc] initWithCapacity:subcolumns.count];
             for(id subcolumnInfo in subcolumns)
             {
-                if([subcolumnInfo isKindOfClass:[NSDictionary class]])
+                if([subcolumnInfo isKindOfClass:[NSString class]])
+                {
+                    [tmpColumns addObject:[[TSColumn alloc] initWithTitle:subcolumnInfo]];
+                }
+                else if([subcolumnInfo isKindOfClass:[NSDictionary class]])
                 {
                     [tmpColumns addObject:[[TSColumn alloc] initWithDictionary:subcolumnInfo]];
                 }
@@ -340,17 +353,23 @@
         _value = info[@"value"];
         _details = info[@"details"];
         
-        NSString *colorStr = info[@"textColor"];
-        if(colorStr)
-            _textColor = [TSUtils colorWithHexString:colorStr];
+        id colorVal = info[@"textColor"];
+        if([colorVal isKindOfClass:[UIColor class]])
+            _textColor = colorVal;
+        else if([colorVal isKindOfClass:[NSString class]])
+            _textColor = [TSUtils colorWithHexString:colorVal];
         
-        colorStr = info[@"detailsColor"];
-        if(colorStr)
-            _detailsColor = [TSUtils colorWithHexString:colorStr];
+        colorVal = info[@"detailsColor"];
+        if([colorVal isKindOfClass:[UIColor class]])
+            _detailsColor = colorVal;
+        else if([colorVal isKindOfClass:[NSString class]])
+            _detailsColor = [TSUtils colorWithHexString:colorVal];
         
-        NSString *iconName = info[@"icon"];
-        if(iconName)
-            _icon = [UIImage imageNamed:iconName];
+        id iconVal = info[@"icon"];
+        if([iconVal isKindOfClass:[UIImage class]])
+            _icon = iconVal;
+        else if([iconVal isKindOfClass:[NSString class]])
+            _icon = [UIImage imageNamed:iconVal];
         
         _textAlignment = NSTextAlignmentCenter;
         NSString *textAligmentStr = info[@"textAlignment"];
@@ -422,68 +441,17 @@
     [_bottomEndColumns removeAllObjects];
     [_rows removeAllObjects];
     
-    for(id column in columns)
+    for(id columnInfo in columns)
     {
-        if([column isKindOfClass:[TSColumn class]])
+        if([columnInfo isKindOfClass:[TSColumn class]])
         {
-            [_columns addObject:column];
+            [_columns addObject:columnInfo];
         }
-        else if([column isKindOfClass:[NSString class]])
+        else if([columnInfo isKindOfClass:[NSString class]])
         {
-            [_columns addObject:[[TSColumn alloc] initWithTitle:column]];
+            [_columns addObject:[[TSColumn alloc] initWithTitle:columnInfo]];
         }
-        else
-        {
-            NSAssert(FALSE, @"Type is not supported");
-        }
-        
-        [self addEndColumnsFrom:[_columns lastObject]];
-    }
-    
-    for(id row in rows)
-    {
-        if([row isKindOfClass:[TSRow class]])
-        {
-            [_rows addObject:row];
-        }
-        else if([row isKindOfClass:[NSArray class]])
-        {
-            [_rows addObject:[[TSRow alloc] initWithCells:row]];
-        }
-        else
-        {
-            NSAssert(FALSE, @"Type is not supported");
-        }
-    }
-    
-    [_tableView reloadData];
-}
-
-- (void)addEndColumnsFrom:(TSColumn *)parentColumn
-{
-    if(parentColumn.subcolumns.count == 0)
-    {
-        [_bottomEndColumns addObject:parentColumn];
-    }
-    else 
-    {
-        for(TSColumn *column in parentColumn.subcolumns)
-        {
-            [self addEndColumnsFrom:column];
-        }
-    }
-}
-
-- (void)setColumnsInfo:(NSArray *)columns andRowsInfo:(NSArray *)rows
-{
-    VerboseLog();
-    [_columns removeAllObjects];
-    [_bottomEndColumns removeAllObjects];
-    [_rows removeAllObjects];
-    
-    for(NSDictionary *columnInfo in columns)
-    {
-        if([columnInfo isKindOfClass:[NSDictionary class]])
+        else if([columnInfo isKindOfClass:[NSDictionary class]])
         {
             [_columns addObject:[TSColumn columnWithDictionary:columnInfo]];
         }
@@ -491,12 +459,20 @@
         {
             NSAssert(FALSE, @"Type is not supported");
         }
-        [self addEndColumnsFrom:[_columns lastObject]];
+        [self addLeafColumnsFrom:[_columns lastObject]];
     }
     
-    for(NSDictionary *rowInfo in rows)
+    for(id rowInfo in rows)
     {
-        if([rowInfo isKindOfClass:[NSDictionary class]])
+        if([rowInfo isKindOfClass:[TSRow class]])
+        {
+            [_rows addObject:rowInfo];
+        }
+        else if([rowInfo isKindOfClass:[NSArray class]])
+        {
+            [_rows addObject:[[TSRow alloc] initWithCells:rowInfo]];
+        }
+        else if([rowInfo isKindOfClass:[NSDictionary class]])
         {
             [_rows addObject:[TSRow rowWithDictionary:rowInfo]];
         }
@@ -508,40 +484,37 @@
     [_tableView reloadData];
 }
 
+- (void)addLeafColumnsFrom:(TSColumn *)parentColumn
+{
+    if(parentColumn.subcolumns.count == 0)
+    {
+        [_bottomEndColumns addObject:parentColumn];
+    }
+    else
+    {
+        for(TSColumn *column in parentColumn.subcolumns)
+        {
+            [self addLeafColumnsFrom:column];
+        }
+    }
+}
 
 - (void)setRows:(NSArray *)rows
 {
     VerboseLog();
     [_rows removeAllObjects];
-    
-    for(id row in rows)
+
+    for(id rowInfo in rows)
     {
-        if([row isKindOfClass:[TSRow class]])
+        if([rowInfo isKindOfClass:[TSRow class]])
         {
-            [_rows addObject:row];
+            [_rows addObject:rowInfo];
         }
-        else if([row isKindOfClass:[NSArray class]])
+        else if([rowInfo isKindOfClass:[NSArray class]])
         {
-            [_rows addObject:[[TSRow alloc] initWithCells:row]];
+            [_rows addObject:[[TSRow alloc] initWithCells:rowInfo]];
         }
-        else
-        {
-            NSAssert(FALSE, @"Type is not supported");
-        }
-    }
-    
-    [_tableView reloadData];
-}
-
-
-- (void)setRowsInfo:(NSArray *)rows
-{
-    VerboseLog();
-    [_rows removeAllObjects];
-
-    for(NSDictionary *rowInfo in rows)
-    {
-        if([rowInfo isKindOfClass:[NSDictionary class]])
+        else if([rowInfo isKindOfClass:[NSDictionary class]])
         {
             [_rows addObject:[TSRow rowWithDictionary:rowInfo]];
         }
@@ -551,7 +524,6 @@
         }
     }
     [_tableView reloadRowsData];
-    
 }
 
 - (TSRow *)rowAtPath:(NSIndexPath *)indexPath
