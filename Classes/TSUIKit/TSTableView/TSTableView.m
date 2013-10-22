@@ -156,7 +156,7 @@
     return _tableHeader.allowColumnSelection;
 }
 
-- (void)setAllowColumnRowSelection:(BOOL)val
+- (void)setAllowColumnSelection:(BOOL)val
 {
     _tableHeader.allowColumnSelection = val;
 }
