@@ -161,7 +161,7 @@
     VerboseLog();
 }
 
-- (void)tableView:(TSTableView *)tableView didSelectRowAtPath:(NSIndexPath *)rowPath
+- (void)tableView:(TSTableView *)tableView didSelectRowAtPath:(NSIndexPath *)rowPath selectedCell:(NSInteger)cellIndex
 {
     VerboseLog();
 }

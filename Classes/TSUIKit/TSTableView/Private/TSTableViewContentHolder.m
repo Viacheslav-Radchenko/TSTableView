@@ -251,7 +251,8 @@
 
 - (void)addReusableRow:(TSTableViewRow *)row
 {
-    [_reusableRows addObject:row];
+    if (row)
+        [_reusableRows addObject:row];
 }
 
 - (TSTableViewCell *)dequeueReusableCellViewWithIdentifier:(NSString *)identifier
@@ -345,7 +346,7 @@
     }
 }
 
-- (void)loadRow:(TSTableViewRowProxy *)row atPath:(NSIndexPath *)rowPath parentView:(UIView *)parentView
+- (UIScrollView*)loadRow:(TSTableViewRowProxy *)row atPath:(NSIndexPath *)rowPath parentView:(UIScrollView *)parentView
 {
     VerboseLog();
     NSInteger numberOfColumns = [self.dataSource numberOfColumns];
@@ -367,12 +368,7 @@
     //if addSubview: is used during scrolling rows overlapping horizontal/vertical scoll indicators of UIScrollView
     [parentView insertSubview:rowView atIndex:0];
     row.rowView = rowView;
-    for(int j = 0; j < row.subrows.count;  ++j)
-    {
-        TSTableViewRowProxy *subrow = row.subrows[j];
-        NSIndexPath *indexPath = [rowPath indexPathByAddingIndex:j];
-        [self loadRow:subrow atPath:indexPath parentView:row.rowView];
-    }
+    return rowView;
 }
 
 #pragma mark -
@@ -380,24 +376,34 @@
 - (void)updateRowsVisibility
 {
     VerboseLog();
-    CGFloat tresholdOffset = self.bounds.size.height/3;
+    for(int i = 0; i < _rows.count;  ++i) {
+        TSTableViewRowProxy *row = _rows[i];
+        [self updateRowsVisibilityHelper:row atPath:[NSIndexPath indexPathWithIndex:i] parentView:self];
+    }
+}
+
+- (void) updateRowsVisibilityHelper:(TSTableViewRowProxy*) row atPath:(NSIndexPath*) rowPath parentView:(UIScrollView *)parentView {
+    CGFloat tresholdOffset = parentView.bounds.size.height/3;
     CGFloat topTreshold = self.contentOffset.y - tresholdOffset;
     CGFloat bottomTreshold = self.contentOffset.y + self.bounds.size.height + tresholdOffset;
-    for(int i = 0; i < _rows.count;  ++i)
+    if((topTreshold <= CGRectGetMinY(row.frame) && CGRectGetMinY(row.frame) <= bottomTreshold) ||
+       (topTreshold <= CGRectGetMaxY(row.frame) && CGRectGetMaxY(row.frame) <= bottomTreshold) ||
+       (CGRectGetMinY(row.frame) < topTreshold && bottomTreshold < CGRectGetMaxY(row.frame)))
     {
-        TSTableViewRowProxy *row = _rows[i];
-        if((topTreshold <= CGRectGetMinY(row.frame) && CGRectGetMinY(row.frame) <= bottomTreshold) ||
-           (topTreshold <= CGRectGetMaxY(row.frame) && CGRectGetMaxY(row.frame) <= bottomTreshold) ||
-           (CGRectGetMinY(row.frame) < topTreshold && bottomTreshold < CGRectGetMaxY(row.frame)))
-        {
-            if(!row.rowView)
-                [self rowWillAppear:row atPath:[NSIndexPath indexPathWithIndex:i]];
+        if(!row.rowView) {
+            //[self rowWillAppear:row atPath:rowPath];
+            parentView = [self loadRow:row atPath:rowPath parentView:parentView];
+            
+            for(int j = 0; j < row.subrows.count;  ++j)
+            {
+                TSTableViewRowProxy *subrow = row.subrows[j];
+                NSIndexPath *indexPath = [rowPath indexPathByAddingIndex:j];
+                [self updateRowsVisibilityHelper:subrow atPath:indexPath parentView:parentView];
+            }
         }
-        else
-        {
-            if(row.rowView)
-                [self rowWillDissapear:row];
-        }
+    } else {
+        if(row.rowView)
+            [self rowWillDissapear:row];
     }
 }
 
@@ -406,19 +412,9 @@
     VerboseLog();
     if(animated) // first show new visible rows and after delay hide not visible (because they could be still on screen while animation is in progress)
     {
-        CGFloat tresholdOffset = self.bounds.size.height/3;
-        CGFloat topTreshold = self.contentOffset.y - tresholdOffset;
-        CGFloat bottomTreshold = self.contentOffset.y + self.bounds.size.height + tresholdOffset;
-        for(int i = 0; i < _rows.count;  ++i)
-        {
+        for(int i = 0; i < _rows.count;  ++i) {
             TSTableViewRowProxy *row = _rows[i];
-            if((topTreshold <= CGRectGetMinY(row.frame) && CGRectGetMinY(row.frame) <= bottomTreshold) ||
-               (topTreshold <= CGRectGetMaxY(row.frame) && CGRectGetMaxY(row.frame) <= bottomTreshold) ||
-               (CGRectGetMinY(row.frame) < topTreshold && bottomTreshold < CGRectGetMaxY(row.frame)))
-            {
-                if(!row.rowView)
-                    [self rowWillAppear:row atPath:[NSIndexPath indexPathWithIndex:i]];
-            }
+            [self updateRowsVisibilityHelper:row atPath:[NSIndexPath indexPathWithIndex:i] parentView:self];
         }
         
         [TSUtils performViewAnimationBlock:nil withCompletion:^{
